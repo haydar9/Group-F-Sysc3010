@@ -1,4 +1,4 @@
-package ca.carleton.sysc.sysc4001.project.trial;
+package ca.carleton.sysc4001.project.trial.java.server;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
