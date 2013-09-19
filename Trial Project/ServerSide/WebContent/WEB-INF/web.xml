@@ -9,4 +9,16 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+  	<servlet-name>FServlet</servlet-name>
+  	<servlet-class>ca.carleton.sysc4001.project.trial.java.server.TrialProjectServlet</servlet-class>
+  	<!-- This will load the servlet into the JVM on start up rather than on request -->
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>FServlet</servlet-name>
+  	<url-pattern>/fservlet</url-pattern>
+  </servlet-mapping>
+
+
 </web-app>
