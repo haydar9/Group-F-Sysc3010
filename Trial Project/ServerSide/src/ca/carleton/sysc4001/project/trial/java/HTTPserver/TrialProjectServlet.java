@@ -1,18 +1,17 @@
-package ca.carleton.sysc4001.project.trial.java.server;
-
-import java.io.IOException;
-import java.io.PrintWriter;
+package ca.carleton.sysc4001.project.trial.java.HTTPserver;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 /**
  * Servlet implementation class TrialProjectServlet
  * 
- * FIXME Welcome-file overrides servlet!? 
+ * FIXME Welcome-file overrides servlet
  */
 //@WebServlet("/fservlet")
 public class TrialProjectServlet extends HttpServlet {
@@ -37,11 +36,7 @@ public class TrialProjectServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//simple demo
 		PrintWriter out = response.getWriter();
-		out.println("<html>");
-		out.println("<body>");
-		out.println("<h1>Hello Servlet Get</h1>");
-		out.println("</body>");
-		out.println("</html>");
+		out.println("<html><body><h1>Hello Servlet Get</h1></body></html>");
 	}
 
 	/**
