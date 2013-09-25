@@ -131,6 +131,7 @@ public class ClientConnection {
 		return null;
 	}
 	
+	//test from cassandra
 	
 	//setter and getter
 	
