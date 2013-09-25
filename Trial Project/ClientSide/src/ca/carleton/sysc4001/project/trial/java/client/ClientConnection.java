@@ -14,16 +14,27 @@ import java.util.logging.Logger;
  *
  */
 public class ClientConnection {
-
-	private final Logger log = Logger.getLogger(ClientConnection.class.getSimpleName());
 	
 	//FIELDS
+	private final Logger log = Logger.getLogger(ClientConnection.class.getSimpleName());
+	
+	//these configurations should be loaded or extracted dynamically
+	private String host;
+	private int port;
+	
+	//status
+	private boolean isConnected;	
+	
+	//core
 	private Socket socket = null;
 	private PrintWriter out = null;
 	private BufferedReader in = null;
-	private boolean isConnected;
 	
 	
+	
+	
+	//TODO: add protocol object to handle communication protocol
+	//Use knockknock protocol from java tutorial
 	
 	//CONSTRUCTORS
 	/**
@@ -55,6 +66,8 @@ public class ClientConnection {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(
                                         socket.getInputStream()));
+            this.host = host;
+            this.port = port;
         
 		} catch (UnknownHostException e) {
             System.err.println("Error<Client.establishConnection>: Unknown host: " + host);
@@ -89,7 +102,7 @@ public class ClientConnection {
 	/**
 	 * Sends an array of bytes can send array serialized objects.
 	 * @param bytes
-	 * @return True if no error occured, false otherwise.
+	 * @return True if no error occurred, false otherwise.
 	 */
 	public boolean sendBytes(byte[] bytes) {
 		try 
@@ -102,7 +115,11 @@ public class ClientConnection {
 		return true;
 	}
 
-	
+	/**
+	 * Reads one line of the input, separated by '\n', '\r' or any other line separator.
+	 * @return
+	 * @see {@link BufferedReader#readLine}
+	 */
 	public byte[] receiveBytes() {
 		try 
 		{ 
@@ -113,5 +130,28 @@ public class ClientConnection {
 		}
 		return null;
 	}
+	
+	
+	//setter and getter
+	
 
+	/**
+	 * TODO: change implementation to actually check for connection rather than returning isConnected
+	 * @return
+	 */
+	public boolean isConnected() {
+		return false; //this is done on purpose to trigger error because not implemented yet
+	}
+	
+	public String getHost() {
+		return host;
+	}
+
+
+	public int getPort() {
+		return port;
+	}
+
+	//no need for setters for the above three variables since we only want to fetch their values
+	
 }
