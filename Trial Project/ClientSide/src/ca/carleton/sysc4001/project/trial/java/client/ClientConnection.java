@@ -3,6 +3,7 @@ package ca.carleton.sysc4001.project.trial.java.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -30,7 +31,7 @@ public class ClientConnection {
 	private PrintWriter out = null;
 	private BufferedReader in = null;
 	
-	
+	private ObjectOutputStream oos;
 	
 	
 	//TODO: add protocol object to handle communication protocol
@@ -66,6 +67,9 @@ public class ClientConnection {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(
                                         socket.getInputStream()));
+            
+            oos = new ObjectOutputStream(socket.getOutputStream());
+             
             this.host = host;
             this.port = port;
         
@@ -87,6 +91,7 @@ public class ClientConnection {
 	public boolean closeConnection()
 	{
 		try {
+			oos.close();
 			in.close();
 			out.close();
 			socket.close();
@@ -115,6 +120,17 @@ public class ClientConnection {
 		return true;
 	}
 
+	//Under test Dont use
+	private boolean sendSerializedObject(Object o)
+	{
+		
+		try {
+			oos.writeObject(o);
+		} catch (IOException e) {
+					}
+		return false;
+	}
+	
 	/**
 	 * Reads one line of the input, separated by '\n', '\r' or any other line separator.
 	 * @return

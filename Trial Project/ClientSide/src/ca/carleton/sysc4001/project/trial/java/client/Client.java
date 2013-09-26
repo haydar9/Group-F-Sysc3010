@@ -1,29 +1,65 @@
 package ca.carleton.sysc4001.project.trial.java.client;
 
+/**
+ * 
+ * @author haydar
+ *
+ */
 public class Client {
 
+	//welcome message
+	private static String WELCOME_MESSAGE = "Welcome to Jeopardy!";
+	
 	/* Handles Client connection to server	 */
 	private ClientConnection connection;
 	
 	private final static String HOST = "192.168.0.20";
 	private final static int PORT = 4444;
 	
+	private ClientGame game;
 	
+	private String playerName;
+	
+
 	//Default Constructor
 	public Client()
 	{
-		connection = new ClientConnection(HOST, PORT);
+		connection = new ClientConnection();
+		game = new ClientGame();
 	}
 	
-	public boolean sendSomething(Object e)
+	public boolean sendMessage(String message)
 	{
-		//could be object class or whatever.
-		return false;
+		return connection.sendBytes(message.getBytes());
 	}
 	
-	//....
+	public String readMessage()
+	{
+		byte[] temp = connection.receiveBytes();
+		
+		if(temp != null)
+		{
+			return new String(temp);
+		}
+		
+		return null;
+	}
 	
-	//parseCommandArguments
+	public boolean connectToServer()
+	{
+		return connection.establishConnection(HOST, PORT);
+	}
+	
+	
+	//Getter and setter
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+	
 	
 	/**
 	 * Client class is the main class, where it can take arguments in order
@@ -45,8 +81,53 @@ public class Client {
 		// consider RMI and serializing objects for getting model/game state
 		
 		//all it does is creating connection
-		Client client = new Client();
 		
+		//must supply a name
+		if(args.length != 1)
+		{
+			System.out.println("Must specify player name.\n<Usage>: Client <player name>");
+			System.exit(1);
+		}
+		
+		
+		Client client = new Client();
+
+		client.setPlayerName(args[0]);
+		
+		System.out.println(WELCOME_MESSAGE + ", " + client.getPlayerName());
+		
+		
+		System.out.print("Connecting to server...");
+		
+		if(client.connectToServer())
+		{
+			System.out.println("Successful.");
+		}
+		else 
+		{
+			System.out.println("Failed.");
+			System.out.println("Client will exit.");
+			System.exit(1);
+		}
+		
+		client.sendMessage("<player>"+client.getPlayerName()+"</player>");
+		
+		//TODO: add checking for game on server first
+		
+		//start game
+		
+		boolean running = true;
+		
+		//game loop
+		while(running)
+		{
+			String incoming = new String();
+			System.out.println(incoming); 
+			//game.processCommand(incoming);
+		}
+		
+		//client terminated
+		client.connection.closeConnection();
 		
 	}
 	
