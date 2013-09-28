@@ -1,19 +1,22 @@
 package ca.carleton.sysc4001.project.trial.java.client;
 
+import ca.carleton.sysc4001.project.trial.java.utility.Connection;
+
 /**
  * 
  * @author haydar
  *
  */
 public class Client {
-
+	
 	//welcome message
 	private static String WELCOME_MESSAGE = "Welcome to Jeopardy!";
+	private static String ACKNOWLEDGE_MESSAGE = "ack";
 	
 	/* Handles Client connection to server	 */
-	private ClientConnection connection;
+	private Connection connection;
 	
-	private final static String HOST = "192.168.0.20";
+	private final static String HOST = "192.168.0.19";
 	private final static int PORT = 4444;
 	
 	private ClientGame game;
@@ -24,30 +27,47 @@ public class Client {
 	//Default Constructor
 	public Client()
 	{
-		connection = new ClientConnection();
+		connection = new Connection();
 		game = new ClientGame();
 	}
 	
+	/** TODO: create a profound to constrain and control content of messages sent
+	 * 
+	 * @param message
+	 * @return
+	 */
 	public boolean sendMessage(String message)
 	{
-		return connection.sendBytes(message.getBytes());
+		return connection.sendMessage(message);
 	}
 	
-	public String readMessage()
+	/**
+	 * Return null if fail to read anything from server.
+	 * @return null if fail to read anything from server.
+	 */
+	public String receieveMessage()
 	{
-		byte[] temp = connection.receiveBytes();
-		
-		if(temp != null)
-		{
-			return new String(temp);
-		}
-		
-		return null;
+		return connection.receieveMessage();
 	}
 	
 	public boolean connectToServer()
 	{
-		return connection.establishConnection(HOST, PORT);
+		//attempt to connect
+		if(connection.establishConnection(HOST, PORT))
+		{
+			//connection made, now ask for access
+		
+			connection.sendMessage("player:" + getPlayerName());
+			//feedback loop code
+			//for now we ain't using threads, so make a simple for loop and check for feedback/acknowledge signal
+			String feedback = connection.receieveMessage();
+			if(feedback.equals(ACKNOWLEDGE_MESSAGE)){
+				return true;
+			}
+			
+			
+		}
+		return false;
 	}
 	
 	
@@ -94,14 +114,17 @@ public class Client {
 
 		client.setPlayerName(args[0]);
 		
-		System.out.println(WELCOME_MESSAGE + ", " + client.getPlayerName());
+		System.out.println(WELCOME_MESSAGE + " " + client.getPlayerName());
 		
 		
-		System.out.print("Connecting to server...");
+		System.out.println("Connecting to server...");
 		
-		if(client.connectToServer())
+		//this may take a bit longer than usual
+		boolean result = client.connectToServer();
+		
+		if(result)
 		{
-			System.out.println("Successful.");
+			System.out.println("Connecting to server...Successful.");
 		}
 		else 
 		{
@@ -110,26 +133,28 @@ public class Client {
 			System.exit(1);
 		}
 		
-		client.sendMessage("<player>"+client.getPlayerName()+"</player>");
-		
 		//TODO: add checking for game on server first
 		
 		//start game
 		
-		boolean running = true;
 		
+		
+		String input;
+		String output;
 		//game loop
-		while(running)
+		client.sendMessage("Hello");
+		while((input = client.receieveMessage()) != null)
 		{
-			String incoming = new String();
-			System.out.println(incoming); 
-			//game.processCommand(incoming);
+			System.out.println(input);
+			//output = game.processCommand(incoming);
+			//sendMessage(output); 
+			
+			//check if disconnected
+			if(input.toLowerCase().equals("exit")) break;
 		}
 		
 		//client terminated
 		client.connection.closeConnection();
 		
 	}
-	
-	
 }
