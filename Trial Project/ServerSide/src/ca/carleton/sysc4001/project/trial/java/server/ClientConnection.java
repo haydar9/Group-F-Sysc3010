@@ -6,17 +6,16 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import ca.carleton.sysc4001.project.trial.java.client.CassandraConstants;
+
 public class ClientConnection extends Thread {
 	
-	private final static int UNKNOWN = -1;
-	private final static int PLAYER = 0;
-	private final static int SPECTATOR = 1;
 	//create common interface for these messages/enum
 	private static String ACKNOWLEDGE_MESSAGE = "ack";
 	
 	private boolean isIdentified;
-	private int clientType;
-	
+	private String clientType;
+	private String name;
 	
 	private PrintWriter out;
 	private BufferedReader in;
@@ -27,7 +26,7 @@ public class ClientConnection extends Thread {
 		this.socket = socket;
 		System.out.println("Client Connected: " + socket.getLocalSocketAddress());
 		isIdentified = false;
-		clientType = UNKNOWN;
+		clientType = CassandraConstants.Client.Type.UNKNOWN;
 	}
 
 	@Override
@@ -43,6 +42,21 @@ public class ClientConnection extends Thread {
 		String input = null;
 		
 		try {
+			out.println(new String(CassandraConstants.Server.WHAT_ARE_YOU));
+			if (in.readLine().equals(CassandraConstants.Client.Type.PLAYER))
+			{
+				clientType = CassandraConstants.Client.Type.PLAYER;
+				out.println(new String(CassandraConstants.Server.WHO_ARE_YOU));
+				name = in.readLine();
+			}
+			else if (in.readLine().equals(CassandraConstants.Client.Type.SPECTATOR))
+			{
+				clientType = CassandraConstants.Client.Type.SPECTATOR;
+				out.println(new String(CassandraConstants.Server.WHO_ARE_YOU));
+			}
+			
+			System.out.println("Client: " + clientType + ", Name: " + name);
+			
 			while ((input = in.readLine()) != null) {
 				System.out.println(input);
 				//String outputLine = kkp.processInput(inputLine);

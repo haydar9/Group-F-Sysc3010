@@ -11,17 +11,15 @@ public class Client {
 	
 	//welcome message
 	private static String WELCOME_MESSAGE = "Welcome to Jeopardy!";
-	private static String ACKNOWLEDGE_MESSAGE = "ack";
 	
 	/* Handles Client connection to server	 */
 	private Connection connection;
 	
-	private final static String HOST = "192.168.0.19";
+	private final static String HOST = "0.0.0.0";
 	private final static int PORT = 4444;
 	
 	private ClientGame game;
 	
-	private String playerName;
 	
 
 	//Default Constructor
@@ -55,31 +53,14 @@ public class Client {
 		//attempt to connect
 		if(connection.establishConnection(HOST, PORT))
 		{
-			//connection made, now ask for access
-		
-			connection.sendMessage("player:" + getPlayerName());
-			//feedback loop code
-			//for now we ain't using threads, so make a simple for loop and check for feedback/acknowledge signal
-			String feedback = connection.receieveMessage();
-			if(feedback.equals(ACKNOWLEDGE_MESSAGE)){
-				return true;
-			}
 			
+			return true;
 			
 		}
 		return false;
 	}
 	
-	
-	//Getter and setter
-	public String getPlayerName() {
-		return playerName;
-	}
 
-	public void setPlayerName(String playerName) {
-		this.playerName = playerName;
-	}
-	
 	
 	/**
 	 * Client class is the main class, where it can take arguments in order
@@ -112,9 +93,8 @@ public class Client {
 		
 		Client client = new Client();
 
-		client.setPlayerName(args[0]);
+		client.game.setPlayerName(args[0]);
 		
-		System.out.println(WELCOME_MESSAGE + " " + client.getPlayerName());
 		
 		
 		System.out.println("Connecting to server...");
@@ -133,21 +113,23 @@ public class Client {
 			System.exit(1);
 		}
 		
-		//TODO: add checking for game on server first
+		System.out.println(WELCOME_MESSAGE + " " + client.game.getPlayerName());
 		
-		//start game
 		
 		
 		
 		String input;
 		String output;
+		
+		//connection made, now ask for access
+		
+		
 		//game loop
-		client.sendMessage("Hello");
 		while((input = client.receieveMessage()) != null)
 		{
 			System.out.println(input);
-			//output = game.processCommand(incoming);
-			//sendMessage(output); 
+			output = client.game.processCommand(input);
+			client.sendMessage(output); 
 			
 			//check if disconnected
 			if(input.toLowerCase().equals("exit")) break;

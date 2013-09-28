@@ -18,7 +18,8 @@ public class Server extends Thread {
 	private ServerSocket serverSocket = null;
     private boolean isRunning = false;
     private List<ClientConnection> clientList;
-	
+	private final static int PORT = 4444;
+    
     public Server()
     {
     	clientList = new ArrayList<ClientConnection>();
@@ -75,21 +76,11 @@ public class Server extends Thread {
 	
     public static void main(String[] args) {
     	
-    	if(args.length != 1)
-    	{
-    		System.out.println("<Usage>: Server <port>\nPort to listen on.");
-    		System.exit(1);
-    	}
-    	if(!args[0].matches("[0-9]+"))
-    	{
-    		System.out.println("Port must be a number.");
-    		System.exit(1);
-    	}
+    	
     	//parse arguments 
     	Server server = new Server();
     	
-    	if(!server.start(new Integer(args[0])))
-        	System.exit(1);
+    	server.start(PORT);
         
     	
     	server.start(); //start server thread to accept connection
