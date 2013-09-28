@@ -2,8 +2,8 @@
 import java.net.*;
 import java.io.*;
 
+public class Client{	
 
-public class Client {
     public static void main(String[] args) throws IOException {
     	//hard coded host
     	//String host = "localhost-dawn";//haydar machine
@@ -29,18 +29,25 @@ public class Client {
 
 	BufferedReader stdIn = new BufferedReader(
                                    new InputStreamReader(System.in));
-	String userInput;
-
-	out.println("This is client 1.");
+	System.out.println("Enter your player name: ");	
+	String userInput=null;
+	
+	while(userInput==null){userInput = stdIn.readLine();}
+	String username = userInput;
+	out.println(username+ " is connected");
+	System.out.println("Waiting for other players...");
 	System.out.println(in.readLine());
 	//write the link to server, TODO: uncomment when not testing with apache server
 	//out.write("GET /ServerSide/ HTTP/1.0\r\n\r\n");
-	
-	while ((userInput = stdIn.readLine()) != null) {
-	    if(userInput == "shutdown client")
+	//userInput==null;
+	while (userInput!= null) {
+	    if(userInput.equals("shutdown client")){
 	    	break;
-		out.println(userInput);
-	    System.out.println("server: " + in.readLine());
+				
+	    //out.println(userInput);
+	    //System.out.println("server: " + in.readLine());
+	}
+	    else{userInput=stdIn.readLine();};		
 	}
 
 	out.close();

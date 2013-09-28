@@ -31,6 +31,7 @@
 
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 /**
  * Our RPI Game Server that will be run on start up or manually. 
@@ -39,7 +40,9 @@ import java.io.*;
  */
 public class RPIGameServer {
     public static void main(String[] args) throws IOException {
-    	
+        ArrayList<Socket> clients = new ArrayList<Socket>();
+	//clients = null;
+	//clients = null;	
     	if(args.length == 0)
     	{
     		System.out.println("RPIGameServer usage: bla bla bla");
@@ -53,6 +56,7 @@ public class RPIGameServer {
             System.out.println("IP Address: " + serverSocket.getInetAddress());
             System.out.println("Local Port: " + serverSocket.getLocalPort());
             System.out.println("Local Socket Address: " + serverSocket.getLocalSocketAddress());
+	    System.out.println("Need 3 players to start game");	
         } catch (IOException e) {
             System.err.println("Could not listen on port: 4444.");
             System.exit(1);
@@ -60,14 +64,14 @@ public class RPIGameServer {
         
         
         Socket clientSocket = null;
-        try {
+        /*try {
             clientSocket = serverSocket.accept();
         } catch (IOException e) {
             System.err.println("Accept failed.");
             System.exit(1);
-        }
+        }*/
 
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+       /* PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
         BufferedReader in = new BufferedReader(
 				new InputStreamReader(
 				clientSocket.getInputStream()));
@@ -75,13 +79,59 @@ public class RPIGameServer {
        
         
         out.println("Hello from socket server: who's this?");
-        System.out.println(in.readLine());
+        System.out.println(in.readLine());*/
+     	
+	PrintWriter out=null;
+        BufferedReader in=null;
+	String inputLine=null;
+	int waiting = 0;
+	while(waiting<3){
+	try {
+	//clientSocket = serverSocket.accept();
+	clients.add(serverSocket.accept());
+	
+ 	//out = new PrintWriter(clients.get(waiting).getOutputStream(), true);
+       in = new BufferedReader(new InputStreamReader(clients.get(waiting).getInputStream()));
+	    //System.out.println(waiting);
+            
+	    waiting++;
+	System.out.println(in.readLine());
+	
+	if(waiting==3){System.out.println("All players connected: Game Started");}
+	else{System.out.println("Waiting for more players: Need "+(3-waiting)+" more");}
+
+        
        
-        while ((inputLine = in.readLine()) != null) {
+        
+        //out.println("Hello from socket server: who's this??");
+        
+        } catch (IOException e) {
+            System.err.println("Accept failed.");
+            System.exit(1);
+        }
+
+	}
+
+        /*while ((inputLine = in.readLine()) != null) {
              out.println(inputLine);
              if (inputLine.equals("shutdown server"))
                 break;
-        }
+        }*/
+
+	//enter game here... 3 people connected.
+	boolean game = true;
+	for(Socket q: clients){	
+		out = new PrintWriter(q.getOutputStream(), true);
+		in = new BufferedReader(new InputStreamReader(q.getInputStream()));
+	
+		//System.out.println(q);
+		out.println("Welcome to millionaire");	
+		//System.out.println(in.readLine());
+	}
+	//System.out.println("Welcome to millionaire");
+	
+	while(game){/*game is in here*/}
+
         out.close();
         in.close();
         clientSocket.close();
