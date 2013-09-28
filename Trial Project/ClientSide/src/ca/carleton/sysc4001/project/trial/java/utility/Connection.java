@@ -1,4 +1,4 @@
-package ca.carleton.sysc4001.project.trial.java.client;
+package ca.carleton.sysc4001.project.trial.java.utility;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,15 +9,17 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
+import ca.carleton.sysc4001.project.trial.java.client.Client;
+
 /**
  * 
  * @author haydar
  *
  */
-public class ClientConnection {
+public class Connection {
 	
 	//FIELDS
-	private final Logger log = Logger.getLogger(ClientConnection.class.getSimpleName());
+	private final Logger log = Logger.getLogger(Connection.class.getSimpleName());
 	
 	//these configurations should be loaded or extracted dynamically
 	private String host;
@@ -31,7 +33,7 @@ public class ClientConnection {
 	private PrintWriter out = null;
 	private BufferedReader in = null;
 	
-	private ObjectOutputStream oos;
+	//private ObjectOutputStream oos;
 	
 	
 	//TODO: add protocol object to handle communication protocol
@@ -42,12 +44,12 @@ public class ClientConnection {
 	 * Default constructor.
 	 * Must call establishConnection() after default constructor.
 	 */
-	public ClientConnection()
+	public Connection()
 	{
 		isConnected = false;
 	}
 	
-	public ClientConnection(String host, int port)
+	public Connection(String host, int port)
 	{
 		isConnected = establishConnection(host, port);
 	}
@@ -68,7 +70,7 @@ public class ClientConnection {
             in = new BufferedReader(new InputStreamReader(
                                         socket.getInputStream()));
             
-            oos = new ObjectOutputStream(socket.getOutputStream());
+            //oos = new ObjectOutputStream(socket.getOutputStream());
              
             this.host = host;
             this.port = port;
@@ -82,16 +84,14 @@ public class ClientConnection {
             return false;
         }
 		
-		//if successful the code will excute beyond this point
-		System.out.println("Info<Client.establishConnection>: Connection established successfully: Host: "
-        + host +", port: " + port);
+		//if successful the code will execute beyond this point
 		return true;
 	}
 	
 	public boolean closeConnection()
 	{
 		try {
-			oos.close();
+			//oos.close();
 			in.close();
 			out.close();
 			socket.close();
@@ -109,18 +109,19 @@ public class ClientConnection {
 	 * @param bytes
 	 * @return True if no error occurred, false otherwise.
 	 */
-	public boolean sendBytes(byte[] bytes) {
+	public boolean sendMessage(String message) {
 		try 
 		{ 
-			out.println(bytes);
+			out.println(message);
 		} catch(Exception e) {
 			System.out.println("Error<sendBytes>: Error sending bytes.");
 			return false;
 		}
+		
 		return true;
 	}
 
-	//Under test Dont use
+	/*//Under test Dont use
 	private boolean sendSerializedObject(Object o)
 	{
 		
@@ -129,22 +130,24 @@ public class ClientConnection {
 		} catch (IOException e) {
 					}
 		return false;
-	}
+	}*/
 	
 	/**
 	 * Reads one line of the input, separated by '\n', '\r' or any other line separator.
 	 * @return
 	 * @see {@link BufferedReader#readLine}
 	 */
-	public byte[] receiveBytes() {
+	public String receieveMessage() {
+		String returned = null;
+		
 		try 
 		{ 
-			in.readLine();
+			returned = in.readLine();
 		} catch(Exception e) {
 			System.out.println("Error<Client.sendBytes>: Error sending bytes.");
 			return null;
 		}
-		return null;
+		return returned;
 	}
 	
 	//test from cassandra
