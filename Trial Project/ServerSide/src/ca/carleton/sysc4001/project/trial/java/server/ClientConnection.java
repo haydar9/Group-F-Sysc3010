@@ -21,6 +21,7 @@ public class ClientConnection extends Thread {
 	private BufferedReader in;
 	private Socket socket;
 	
+	
 	public ClientConnection(Socket socket)
 	{
 		this.socket = socket;
@@ -64,16 +65,14 @@ public class ClientConnection extends Thread {
 			}
 			System.out.println("Client: " + clientType + ", Name: " + clientName);
 			
+			notify();
+			//the whole point of using thread is here
 			while ((input = receieveMessage()) != null) {
-				System.out.println(input);
 				
-				if (input.equals("close"))
-				    break;
-				
-			    }
+			}
 			
 			//close connection and all I/O channels
-			close();
+			
 		} catch (IOException e) {
 		}
 	}

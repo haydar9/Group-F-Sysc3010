@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import ca.carleton.sysc4001.project.trial.java.client.Client;
 import ca.carleton.sysc4001.project.trial.java.server.game.GameServerSide;
+import ca.carleton.sysc4001.project.trial.java.server.game.Player;
 
 /**
  * Our RPI Game Server that will be run on start up or manually. 
@@ -71,7 +72,9 @@ public class Server extends Thread {
         		ClientConnection cc = new ClientConnection(serverSocket.accept());
         		cc.start();
         		clientList.add(cc);
-            } catch (IOException e) {
+        		wait();
+        		System.out.println("Connection finished, ");
+            } catch (IOException | InterruptedException e) {
             }
         	
         }
@@ -89,14 +92,14 @@ public class Server extends Thread {
 		}
 	}
 	
-	public synchronized void blockAcceptingConnections()
+	/*public synchronized void blockAcceptingConnections()
 	{
 		try {
 			wait();
 		} catch (InterruptedException e) {
 			System.out.println("Error: Unable to obtain lock on server.");
 		}
-	}
+	}*/
 	
 	/*public synchronized unblockAcceptingConnections() {
 	       notify();
@@ -127,14 +130,14 @@ public class Server extends Thread {
 					server.join(); //force
 				} catch (InterruptedException e) {}
 			}
-			else if (command.equals("suspend server"))
+		/*	else if (command.equals("suspend server"))
 			{
 				server.blockAcceptingConnections();
 			}
 			else if(command.equals("resume server"))
 			{
 				//server.unblockAcceptingConnections();
-			}
+			}*/
 			else {
 				System.out.println("Error: Invalid command.");
 			}

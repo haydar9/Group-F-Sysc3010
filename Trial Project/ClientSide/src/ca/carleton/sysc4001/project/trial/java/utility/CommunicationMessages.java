@@ -33,6 +33,8 @@ public class CommunicationMessages {
 		public static final String WHAT_ARE_YOU = "What are you?";
 		public static final String WELCOME_PLAYER = "Welcome the player";
 		public static final String FORCE_EXIT = "Force Exit";
+		public static final String DISPLAY = "Display on terminal";
+		
 	}
 	
 	public class Spectator

@@ -15,14 +15,18 @@ public class GameServerSide extends Thread{
 	private List<Player> playerList;
 	private Server server;
 	
-	
+	/**
+	 * Coupling, this coupling is safe since the game will not be created 
+	 * until the server has successfully been created.  
+	 * @param server
+	 */
 	public GameServerSide(Server server) {
 		this.server = server;
 	}
 
-	public void addPlayer()
+	public void addPlayer(Player player)
 	{
-		
+		playerList.add(player);	
 	}
 	
 	/**
@@ -31,9 +35,12 @@ public class GameServerSide extends Thread{
 	@Override
 	public void run()
 	{
-		//use 
-		//TODO: pierre add your code here
-		//you want to check player list only.
+		if(playerList.size()<3){
+			System.out.println("Need " + (3-playerList.size()) + " more players.");
+		}
+		else if(playerList.size()==3){
+			System.out.println("Three players connected: Game Starting");
+		}
 	}
 	
 

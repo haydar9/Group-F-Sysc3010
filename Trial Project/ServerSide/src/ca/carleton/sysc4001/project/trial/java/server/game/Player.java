@@ -1,7 +1,7 @@
 package ca.carleton.sysc4001.project.trial.java.server.game;
 
 /**
- * 
+ * Player class
  * @author haydar
  * @author pierre
  *
