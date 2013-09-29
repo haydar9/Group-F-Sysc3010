@@ -2,10 +2,12 @@ package ca.carleton.sysc4001.project.trial.java.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import ca.carleton.sysc4001.project.trial.java.client.Client;
+import ca.carleton.sysc4001.project.trial.java.server.game.GameServerSide;
 
 /**
  * Our RPI Game Server that will be run on start up or manually. 
@@ -19,13 +21,15 @@ public class Server extends Thread {
     private boolean isRunning = false;
     private List<ClientConnection> clientList;
 	private final static int PORT = 4444;
-    
+    public GameServerSide game;
+	
     public Server()
     {
     	clientList = new ArrayList<ClientConnection>();
+    	game = new GameServerSide(this);//not good 
     }
     
-    
+    //Note not same as thread's start(), has different signature
 	public boolean start(int port)
 	{
 		try {
@@ -46,6 +50,11 @@ public class Server extends Thread {
 	{
 		
 			try {
+				for(ClientConnection cc : clientList)
+				{
+					cc.close();
+				}
+			
 				serverSocket.close();
 				System.out.println("Shutting down Server...Successful.");
 			} catch (IOException e) {}
@@ -58,7 +67,7 @@ public class Server extends Thread {
         isRunning = true;
         while(isRunning)
         {
-        	try {//TODO: check if this uses memory up ==> memory leak suspected?!?!
+        	try {
         		ClientConnection cc = new ClientConnection(serverSocket.accept());
         		cc.start();
         		clientList.add(cc);
@@ -68,11 +77,30 @@ public class Server extends Thread {
         }
       }
 	
-	//To send something to all players/clients
-	public void broadcast()
+	/**
+	 * To send something to all players/clients, simplly implemented for low scale.
+	 * @param message The message to broadcast to all clients connected.d
+	 */
+	public void broadcastMessage(String message)
 	{
-		
+		for(ClientConnection cc: clientList)
+		{
+			cc.sendMessage(message);
+		}
 	}
+	
+	public synchronized void blockAcceptingConnections()
+	{
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			System.out.println("Error: Unable to obtain lock on server.");
+		}
+	}
+	
+	/*public synchronized unblockAcceptingConnections() {
+	       notify();
+	}*/
 	
     public static void main(String[] args) {
     	
@@ -83,8 +111,10 @@ public class Server extends Thread {
     	server.start(PORT);
         
     	
-    	server.start(); //start server thread to accept connection
-     		
+    	server.start(); //start server thread to accept connection, this is thread method
+     	
+    	server.game.start(); //thread method
+    	
 		Scanner terminal = new Scanner(System.in);
 			
 		while(server.isAlive()){
@@ -96,6 +126,14 @@ public class Server extends Thread {
 				try {
 					server.join(); //force
 				} catch (InterruptedException e) {}
+			}
+			else if (command.equals("suspend server"))
+			{
+				server.blockAcceptingConnections();
+			}
+			else if(command.equals("resume server"))
+			{
+				//server.unblockAcceptingConnections();
 			}
 			else {
 				System.out.println("Error: Invalid command.");

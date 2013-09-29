@@ -1,5 +1,6 @@
 package ca.carleton.sysc4001.project.trial.java.client;
 
+import ca.carleton.sysc4001.project.trial.java.utility.CommunicationMessages;
 import ca.carleton.sysc4001.project.trial.java.utility.Connection;
 
 /**
@@ -9,8 +10,6 @@ import ca.carleton.sysc4001.project.trial.java.utility.Connection;
  */
 public class Client {
 	
-	//welcome message
-	private static String WELCOME_MESSAGE = "Welcome to Jeopardy!";
 	
 	/* Handles Client connection to server	 */
 	private Connection connection;
@@ -113,7 +112,7 @@ public class Client {
 			System.exit(1);
 		}
 		
-		System.out.println(WELCOME_MESSAGE + " " + client.game.getPlayerName());
+		
 		
 		
 		
@@ -127,12 +126,18 @@ public class Client {
 		//game loop
 		while((input = client.receieveMessage()) != null)
 		{
-			System.out.println(input);
-			output = client.game.processCommand(input);
-			client.sendMessage(output); 
+			if(input.equals(CommunicationMessages.Server.FORCE_EXIT))
+			{
+				System.out.println("Server forced disconnection.");
+				break;
+			}
 			
-			//check if disconnected
-			if(input.toLowerCase().equals("exit")) break;
+			output = client.game.processCommand(input);
+			
+			//some commands doesn't require to send feedback then skip rest of code in loop
+			if(output.equals(CommunicationMessages.DONT_SEND_FEEDBACK)) continue;//stops the loop here and iterate next
+			
+			client.sendMessage(output);
 		}
 		
 		//client terminated

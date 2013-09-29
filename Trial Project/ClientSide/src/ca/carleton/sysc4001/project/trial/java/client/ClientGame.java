@@ -1,13 +1,18 @@
 package ca.carleton.sysc4001.project.trial.java.client;
-//import java.util.Scanner;
+
+import ca.carleton.sysc4001.project.trial.java.utility.CommunicationMessages;
 
 /**
- * 
+ * The client side of the game.
  * @author cassandra
+ * @author haydar
  *
  */
 public class ClientGame 
 {
+	//welcome message
+	private static String WELCOME_MESSAGE = "Welcome to Jeopardy!";
+		
 	private String playerName;
 	
 	private void playGame()
@@ -24,22 +29,27 @@ public class ClientGame
 	 */
 	public String processCommand(String input)
 	{
-		if(input.equals(CassandraConstants.Server.WAIT))
+		if(input.equals(CommunicationMessages.Server.WAIT))
 		{
-			return CassandraConstants.Client.CLIENT_WAITING;
+			return CommunicationMessages.Client.CLIENT_WAITING;
 		}
-		else if(input.equals(CassandraConstants.Server.WHO_ARE_YOU))
+		else if(input.equals(CommunicationMessages.Server.WHO_ARE_YOU))
 		{
 			return getPlayerName();
 			
 		}
-		else if(input.equals(CassandraConstants.Server.WHAT_ARE_YOU))
+		else if(input.equals(CommunicationMessages.Server.WHAT_ARE_YOU))
 		{
-			return CassandraConstants.Client.Type.PLAYER;
+			return CommunicationMessages.Client.Type.PLAYER;
+		}
+		else if(input.equals(CommunicationMessages.Server.WELCOME_PLAYER))
+		{
+			System.out.println(WELCOME_MESSAGE);
+			return CommunicationMessages.DONT_SEND_FEEDBACK;
 		}
 		else
 		{
-			return CassandraConstants.Client.I_DONT_KNOW;
+			return CommunicationMessages.Client.I_DONT_KNOW;
 		}
 		
 		

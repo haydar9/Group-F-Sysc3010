@@ -88,6 +88,10 @@ public class Connection {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean closeConnection()
 	{
 		try {
@@ -105,8 +109,8 @@ public class Connection {
 	}
 	
 	/**
-	 * Sends an array of bytes can send array serialized objects.
-	 * @param bytes
+	 * Sends a message to the server.
+	 * @param message Message to send to the server.
 	 * @return True if no error occurred, false otherwise.
 	 */
 	public boolean sendMessage(String message) {
@@ -133,8 +137,8 @@ public class Connection {
 	}*/
 	
 	/**
-	 * Reads one line of the input, separated by '\n', '\r' or any other line separator.
-	 * @return
+	 * Reads one line of the input from server, separated by '\n', '\r' or any other line separator.
+	 * @return The input from server, null otherwise if reading not successful.
 	 * @see {@link BufferedReader#readLine}
 	 */
 	public String receieveMessage() {

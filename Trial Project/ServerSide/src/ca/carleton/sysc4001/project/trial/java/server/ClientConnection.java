@@ -6,16 +6,16 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import ca.carleton.sysc4001.project.trial.java.client.CassandraConstants;
+import ca.carleton.sysc4001.project.trial.java.utility.CommunicationMessages;
 
 public class ClientConnection extends Thread {
 	
-	//create common interface for these messages/enum
-	private static String ACKNOWLEDGE_MESSAGE = "ack";
+
 	
-	private boolean isIdentified;
 	private String clientType;
-	private String name;
+	
+	private String clientName;
+	
 	
 	private PrintWriter out;
 	private BufferedReader in;
@@ -25,10 +25,11 @@ public class ClientConnection extends Thread {
 	{
 		this.socket = socket;
 		System.out.println("Client Connected: " + socket.getLocalSocketAddress());
-		isIdentified = false;
-		clientType = CassandraConstants.Client.Type.UNKNOWN;
+		clientType = CommunicationMessages.Client.Type.UNKNOWN;
 	}
 
+	
+	
 	@Override
 	public void run()
 	{
@@ -42,80 +43,104 @@ public class ClientConnection extends Thread {
 		String input = null;
 		
 		try {
-			out.println(new String(CassandraConstants.Server.WHAT_ARE_YOU));
-			if (in.readLine().equals(CassandraConstants.Client.Type.PLAYER))
-			{
-				clientType = CassandraConstants.Client.Type.PLAYER;
-				out.println(new String(CassandraConstants.Server.WHO_ARE_YOU));
-				name = in.readLine();
-			}
-			else if (in.readLine().equals(CassandraConstants.Client.Type.SPECTATOR))
-			{
-				clientType = CassandraConstants.Client.Type.SPECTATOR;
-				out.println(new String(CassandraConstants.Server.WHO_ARE_YOU));
-			}
+			//initiate talking by asking client what they are (player or spectator)
+			out.println(new String(CommunicationMessages.Server.WHAT_ARE_YOU));
 			
-			System.out.println("Client: " + clientType + ", Name: " + name);
+			if (in.readLine().equals(CommunicationMessages.Client.Type.PLAYER))
+			{
+				clientType = CommunicationMessages.Client.Type.PLAYER;
+				out.println(new String(CommunicationMessages.Server.WHO_ARE_YOU));
+				clientName = in.readLine();
+				out.println(new String(CommunicationMessages.Server.WELCOME_PLAYER));
+			}
+			else if (in.readLine().equals(CommunicationMessages.Client.Type.SPECTATOR))
+			{
+				clientType = CommunicationMessages.Client.Type.SPECTATOR;
+				out.println(new String(CommunicationMessages.Server.WHO_ARE_YOU));
+			}
+			else {
+				System.out.println("Error: Client is not recognized.");
+				return; //terminate thread by returning from the run method
+			}
+			System.out.println("Client: " + clientType + ", Name: " + clientName);
 			
-			while ((input = in.readLine()) != null) {
+			while ((input = receieveMessage()) != null) {
 				System.out.println(input);
-				//String outputLine = kkp.processInput(inputLine);
-				if(input.equals("hello")) 
-					out.println("hello from server");
-				out.println(new String(ACKNOWLEDGE_MESSAGE));
+				
 				if (input.equals("close"))
 				    break;
+				
 			    }
+			
+			//close connection and all I/O channels
+			close();
 		} catch (IOException e) {
 		}
 	}
 	
 	/**
-	 * Sends an array of bytes can send array serialized objects.
-	 * @param bytes
+	 * Sends a message to the server.
+	 * @param message Message to send to the server.
 	 * @return True if no error occurred, false otherwise.
 	 */
-	public boolean sendBytes(byte[] bytes) {
+	public boolean sendMessage(String message) {
 		try 
 		{ 
-			out.println(bytes);
+			out.println(message);
 		} catch(Exception e) {
-			System.out.println("Error<sendBytes>: Error sending bytes.");
+			System.out.println("Error<sendMessage>: Error sending bytes.");
 			return false;
 		}
 		
 		return true;
 	}
+
+	/*//Under test Dont use
+	private boolean sendSerializedObject(Object o)
+	{
+		
+		try {
+			oos.writeObject(o);
+		} catch (IOException e) {
+					}
+		return false;
+	}*/
 	
 	/**
-	 * Reads one line of the input, separated by '\n', '\r' or any other line separator.
-	 * @return
+	 * Reads one line of the input from server, separated by '\n', '\r' or any other line separator.
+	 * @return The input from server, null otherwise if reading not successful.
 	 * @see {@link BufferedReader#readLine}
 	 */
-	public byte[] receiveBytes() {
+	public String receieveMessage() {
 		String returned = null;
 		
 		try 
 		{ 
 			returned = in.readLine();
 		} catch(Exception e) {
-			System.out.println("Error<Client.sendBytes>: Error sending bytes.");
+			System.out.println("Error<receieveMessage>: Error sending bytes.");
 			return null;
 		}
-		return returned.getBytes();
+		return returned;
 	}
 	
 	public void close()
 	{
 		try {
-			socket.close();
-			
-			if(in != null) 
-				in.close();
-			if(out != null)
-				out.close();
+			socket.close();			
+			in.close();
+			out.close();
 		} catch (IOException e) {
 		}
 		
+	}
+	
+	public String getClientType() {
+		return clientType;
+	}
+
+	public String getClientName()
+	{
+		return clientName;
 	}
 }
