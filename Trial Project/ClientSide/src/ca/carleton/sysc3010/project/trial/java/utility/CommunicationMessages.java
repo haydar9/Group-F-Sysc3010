@@ -1,4 +1,4 @@
-package ca.carleton.sysc4001.project.trial.java.utility;
+package ca.carleton.sysc3010.project.trial.java.utility;
 
 /**
  * This class contains the communication messages

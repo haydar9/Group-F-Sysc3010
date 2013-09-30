@@ -1,4 +1,4 @@
-package ca.carleton.sysc4001.project.trial.java.server;
+package ca.carleton.sysc3010.project.trial.java.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import ca.carleton.sysc4001.project.trial.java.client.Client;
-import ca.carleton.sysc4001.project.trial.java.server.game.GameServerSide;
-import ca.carleton.sysc4001.project.trial.java.server.game.Player;
+import ca.carleton.sysc3010.project.trial.java.client.Client;
+import ca.carleton.sysc3010.project.trial.java.server.game.GameServerSide;
+import ca.carleton.sysc3010.project.trial.java.server.game.Player;
 
 /**
  * Our RPI Game Server that will be run on start up or manually. 

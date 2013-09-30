@@ -1,11 +1,11 @@
-package ca.carleton.sysc4001.project.trial.java.server.game;
+package ca.carleton.sysc3010.project.trial.java.server.game;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.carleton.sysc4001.project.trial.java.server.ClientConnection;
-import ca.carleton.sysc4001.project.trial.java.server.Server;
-import ca.carleton.sysc4001.project.trial.java.utility.CommunicationMessages;
+import ca.carleton.sysc3010.project.trial.java.server.ClientConnection;
+import ca.carleton.sysc3010.project.trial.java.server.Server;
+import ca.carleton.sysc3010.project.trial.java.utility.CommunicationMessages;
 
 /**
  * 

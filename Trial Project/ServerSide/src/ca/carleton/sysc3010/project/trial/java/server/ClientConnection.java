@@ -1,4 +1,4 @@
-package ca.carleton.sysc4001.project.trial.java.server;
+package ca.carleton.sysc3010.project.trial.java.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,9 +6,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import ca.carleton.sysc4001.project.trial.java.server.game.GameServerSide;
-import ca.carleton.sysc4001.project.trial.java.server.game.Player;
-import ca.carleton.sysc4001.project.trial.java.utility.CommunicationMessages;
+import ca.carleton.sysc3010.project.trial.java.server.game.GameServerSide;
+import ca.carleton.sysc3010.project.trial.java.server.game.Player;
+import ca.carleton.sysc3010.project.trial.java.utility.CommunicationMessages;
 
 
 public class ClientConnection extends Thread {

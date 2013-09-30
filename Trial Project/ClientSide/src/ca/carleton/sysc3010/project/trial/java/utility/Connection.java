@@ -1,4 +1,4 @@
-package ca.carleton.sysc4001.project.trial.java.utility;
+package ca.carleton.sysc3010.project.trial.java.utility;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
-import ca.carleton.sysc4001.project.trial.java.client.Client;
+import ca.carleton.sysc3010.project.trial.java.client.Client;
 
 /**
  * 

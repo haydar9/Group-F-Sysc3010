@@ -1,6 +1,6 @@
-package ca.carleton.sysc4001.project.trial.java.client;
+package ca.carleton.sysc3010.project.trial.java.client;
 
-import ca.carleton.sysc4001.project.trial.java.utility.CommunicationMessages;
+import ca.carleton.sysc3010.project.trial.java.utility.CommunicationMessages;
 
 /**
  * The client side of the game.

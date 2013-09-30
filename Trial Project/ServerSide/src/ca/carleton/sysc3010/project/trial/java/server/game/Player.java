@@ -1,4 +1,4 @@
-package ca.carleton.sysc4001.project.trial.java.server.game;
+package ca.carleton.sysc3010.project.trial.java.server.game;
 
 /**
  * Player class

@@ -1,4 +1,4 @@
-package ca.carleton.sysc4001.project.trial.java.client;
+package ca.carleton.sysc3010.project.trial.java.client;
 
 import org.python.core.PyInstance;  
 import org.python.util.PythonInterpreter;  
