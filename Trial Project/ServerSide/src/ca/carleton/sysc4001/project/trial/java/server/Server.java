@@ -69,19 +69,16 @@ public class Server extends Thread {
         while(isRunning)
         {
         	try {
-        		ClientConnection cc = new ClientConnection(serverSocket.accept());
+        		ClientConnection cc = new ClientConnection(serverSocket.accept(),game);
         		cc.start();
-        		clientList.add(cc);
-        		wait();
-        		System.out.println("Connection finished, ");
-            } catch (IOException | InterruptedException e) {
+          } catch (IOException e) {
             }
         	
         }
       }
 	
 	/**
-	 * To send something to all players/clients, simplly implemented for low scale.
+	 * To send something to all players/clients, simply implemented for low scale.
 	 * @param message The message to broadcast to all clients connected.d
 	 */
 	public void broadcastMessage(String message)

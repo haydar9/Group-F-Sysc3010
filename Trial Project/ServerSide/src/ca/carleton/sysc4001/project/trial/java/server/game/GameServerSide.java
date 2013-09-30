@@ -22,11 +22,21 @@ public class GameServerSide extends Thread{
 	 */
 	public GameServerSide(Server server) {
 		this.server = server;
+		playerList = new ArrayList<Player>();
 	}
 
 	public void addPlayer(Player player)
 	{
 		playerList.add(player);	
+	}
+	
+	/**
+	 * The game processing is synchronous. A player request at a time.
+	 * @param input
+	 */
+	public synchronized void processInput(String input)
+	{
+		
 	}
 	
 	/**

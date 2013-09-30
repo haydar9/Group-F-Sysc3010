@@ -6,27 +6,29 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import ca.carleton.sysc4001.project.trial.java.server.game.GameServerSide;
 import ca.carleton.sysc4001.project.trial.java.utility.CommunicationMessages;
 
 public class ClientConnection extends Thread {
 	
-
 	
 	private String clientType;
 	
 	private String clientName;
 	
+	private GameServerSide game;
 	
 	private PrintWriter out;
 	private BufferedReader in;
 	private Socket socket;
 	
 	
-	public ClientConnection(Socket socket)
+	public ClientConnection(Socket socket, GameServerSide game)
 	{
 		this.socket = socket;
 		System.out.println("Client Connected: " + socket.getLocalSocketAddress());
 		clientType = CommunicationMessages.Client.Type.UNKNOWN;
+		this.game = game;
 	}
 
 	
@@ -60,19 +62,23 @@ public class ClientConnection extends Thread {
 				out.println(new String(CommunicationMessages.Server.WHO_ARE_YOU));
 			}
 			else {
+				out.println(new String(CommunicationMessages.Server.REJECTED));
 				System.out.println("Error: Client is not recognized.");
+				close();
 				return; //terminate thread by returning from the run method
 			}
-			System.out.println("Client: " + clientType + ", Name: " + clientName);
 			
-			notify();
+			//client recognized
+			System.out.println("Client: " + clientType + ", Name: " + clientName);
+			//get game object to redirect to
+			i
 			//the whole point of using thread is here
 			while ((input = receieveMessage()) != null) {
-				
+				game.processInput(input);
 			}
 			
 			//close connection and all I/O channels
-			
+			close();
 		} catch (IOException e) {
 		}
 	}
@@ -126,9 +132,9 @@ public class ClientConnection extends Thread {
 	public void close()
 	{
 		try {
-			socket.close();			
 			in.close();
 			out.close();
+			socket.close();		
 		} catch (IOException e) {
 		}
 		
