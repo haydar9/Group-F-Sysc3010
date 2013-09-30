@@ -3,7 +3,9 @@ package ca.carleton.sysc4001.project.trial.java.server.game;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.carleton.sysc4001.project.trial.java.server.ClientConnection;
 import ca.carleton.sysc4001.project.trial.java.server.Server;
+import ca.carleton.sysc4001.project.trial.java.utility.CommunicationMessages;
 
 /**
  * 
@@ -30,13 +32,15 @@ public class GameServerSide extends Thread{
 		playerList.add(player);	
 	}
 	
+	
 	/**
 	 * The game processing is synchronous. A player request at a time.
+	 * Assuming players are already connected.
 	 * @param input
 	 */
-	public synchronized void processInput(String input)
+	public synchronized String processInput(String input)
 	{
-		
+		return null;	
 	}
 	
 	/**
@@ -53,5 +57,26 @@ public class GameServerSide extends Thread{
 		}
 	}
 	
-
+	/**
+	 * 
+	 */
+	public synchronized void startGame(ClientConnection cc)
+	{
+		if(playerList.size()<3){
+			System.out.println("Waiting for " + (3-playerList.size()) + " more players...");
+			cc.sendMessage(CommunicationMessages.Server.DISPLAY);
+			cc.sendMessage("Waiting for " + (3-playerList.size()) + " more players...");
+			try {
+				wait();
+			} catch (InterruptedException e) {	}
+		}
+		else if(playerList.size()==3){
+			System.out.println("Three players connected: Game Starting...");
+			cc.sendMessage(CommunicationMessages.Server.DISPLAY);
+			cc.sendMessage("Three players connected: Game Starting...");
+			//TODO: add anything related to initializing or setting up game here
+			notifyAll();
+		}
+	}
+	
 }

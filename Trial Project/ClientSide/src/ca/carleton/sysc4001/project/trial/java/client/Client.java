@@ -131,6 +131,11 @@ public class Client {
 				System.out.println("Server forced disconnection.");
 				break;
 			}
+			else if (input.equals(CommunicationMessages.Server.DISPLAY))
+			{
+				System.out.println(client.receieveMessage());
+				continue;
+			}
 			
 			output = client.game.processCommand(input);
 			

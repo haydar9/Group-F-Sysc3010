@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import ca.carleton.sysc4001.project.trial.java.server.game.GameServerSide;
+import ca.carleton.sysc4001.project.trial.java.server.game.Player;
 import ca.carleton.sysc4001.project.trial.java.utility.CommunicationMessages;
+
 
 public class ClientConnection extends Thread {
 	
@@ -71,7 +73,12 @@ public class ClientConnection extends Thread {
 			//client recognized
 			System.out.println("Client: " + clientType + ", Name: " + clientName);
 			//get game object to redirect to
-			i
+			game.addPlayer(new Player(clientName));
+			game.startGame(this);
+			
+			out.println(CommunicationMessages.Server.DISPLAY);
+			out.println("Game started, ENJOY!");
+			
 			//the whole point of using thread is here
 			while ((input = receieveMessage()) != null) {
 				game.processInput(input);
