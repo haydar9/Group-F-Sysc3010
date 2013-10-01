@@ -1,5 +1,9 @@
 package ca.carleton.sysc3010.project.trial.java.client;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+
 import ca.carleton.sysc3010.project.trial.java.utility.CommunicationMessages;
 import ca.carleton.sysc3010.project.trial.java.utility.Connection;
 
@@ -25,7 +29,7 @@ public class Client {
 	public Client()
 	{
 		connection = new Connection();
-		game = new ClientGame();
+		game = new ClientGame(this);
 	}
 	
 	/** TODO: create a profound to constrain and control content of messages sent
@@ -113,8 +117,28 @@ public class Client {
 		}
 		
 		
-		
-		
+/*		try{
+		Process p;
+		p = Runtime.getRuntime().exec("python pythontest.py");
+		InputStreamReader isr = new InputStreamReader(p.getInputStream());
+		BufferedReader br = new BufferedReader(isr);
+		PrintWriter out = new PrintWriter(p.getOutputStream(), true);
+		String temp = null;
+		Thread.sleep(5000);
+		while((temp=br.readLine())!=null)
+		{	System.out.println(temp);
+			if(temp.equals("0")){
+
+				System.out.println("buttonpressed");
+			}
+		}
+		System.out.println("Python script terminated.");	
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		*/
+		//end test
 		
 		
 		String input;

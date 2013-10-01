@@ -78,10 +78,10 @@ public class ClientConnection extends Thread {
 			
 			out.println(CommunicationMessages.Server.DISPLAY);
 			out.println("Game started, ENJOY!");
-			
+			out.println(CommunicationMessages.Server.GAME_START);
 			//the whole point of using thread is here
 			while ((input = receieveMessage()) != null) {
-				game.processInput(input);
+				game.processInput(input,this);
 			}
 			
 			//close connection and all I/O channels

@@ -38,8 +38,11 @@ public class GameServerSide extends Thread{
 	 * Assuming players are already connected.
 	 * @param input
 	 */
-	public synchronized String processInput(String input)
+	public synchronized String processInput(String input, ClientConnection cc)
 	{
+		if(input.equals(CommunicationMessages.Client.BUTTON_PRESSED)){
+			System.out.println(cc.getClientName() + " pressed the button");
+		}
 		return null;	
 	}
 	
@@ -62,7 +65,6 @@ public class GameServerSide extends Thread{
 	 */
 	public synchronized void startGame(ClientConnection cc)
 	{
-		server.addClient(cc);//TODO: when game done remove client.
 		if(playerList.size()<3){
 			System.out.println("Waiting for " + (3-playerList.size()) + " more players...");
 			cc.sendMessage(CommunicationMessages.Server.DISPLAY);

@@ -9,7 +9,6 @@ import java.util.Scanner;
 import ca.carleton.sysc3010.project.trial.java.client.Client;
 import ca.carleton.sysc3010.project.trial.java.server.game.GameServerSide;
 import ca.carleton.sysc3010.project.trial.java.server.game.Player;
-import ca.carleton.sysc3010.project.trial.java.utility.CommunicationMessages;
 
 /**
  * Our RPI Game Server that will be run on start up or manually. 
@@ -78,32 +77,6 @@ public class Server extends Thread {
         }
       }
 	
-	public boolean addClient(ClientConnection cc)
-	{
-		return clientList.add(cc);
-	}
-	
-	public boolean removeClient(ClientConnection cc)
-	{
-		return clientList.remove(cc);
-	}
-	
-	/**
-	 * Send a message to a specific client.
-	 * @param clientName Client name to send message.
-	 */
-	public void sendMessageToClient(String clientName, String message)
-	{
-		for(ClientConnection cc : clientList)
-		{
-			if(cc.getName().equals(clientName))
-			{
-				cc.sendMessage(message);
-				break;
-			}
-		}
-	}
-	
 	/**
 	 * To send something to all players/clients, simply implemented for low scale.
 	 * @param message The message to broadcast to all clients connected.d
@@ -116,15 +89,6 @@ public class Server extends Thread {
 		}
 	}
 	
-	
-	public void broadcastDisplayMessage(String message)
-	{
-		for(ClientConnection cc: clientList)
-		{
-			cc.sendMessage(CommunicationMessages.Server.DISPLAY);
-			cc.sendMessage(message);
-		}
-	}
 	/*public synchronized void blockAcceptingConnections()
 	{
 		try {
@@ -152,10 +116,9 @@ public class Server extends Thread {
     	server.game.start(); //thread method
     	
 		Scanner terminal = new Scanner(System.in);
-		//terminal.useDelimiter("\n|\r\n|\\s+");
-		
+			
 		while(server.isAlive()){
-			String command = terminal.nextLine();
+			String command = terminal.next();
 			if (command.equals("shutdown"))
 			{
 				System.out.println("Shutting down Server...");
@@ -172,10 +135,6 @@ public class Server extends Thread {
 			{
 				//server.unblockAcceptingConnections();
 			}*/
-			else if(command.equals("broadcast"))
-			{
-				server.broadcastDisplayMessage(terminal.nextLine());
-			}
 			else {
 				System.out.println("Error: Invalid command.");
 			}

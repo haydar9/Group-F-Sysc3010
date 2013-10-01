@@ -8,7 +8,7 @@ import org.python.util.PythonInterpreter;
  * @Pierre
  *
  */
-`
+
 public class InterpreterJava  
 {  
    PythonInterpreter interpreter = null;  

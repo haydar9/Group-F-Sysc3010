@@ -1,5 +1,9 @@
 package ca.carleton.sysc3010.project.trial.java.client;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+
 import ca.carleton.sysc3010.project.trial.java.utility.CommunicationMessages;
 
 /**
@@ -8,18 +12,49 @@ import ca.carleton.sysc3010.project.trial.java.utility.CommunicationMessages;
  * @author haydar
  *
  */
-public class ClientGame 
+public class ClientGame extends Thread
 {
 	//welcome message
 	private static String WELCOME_MESSAGE = "Welcome to Jeopardy!";
 		
 	private String playerName;
+	private String file;
+	Client client;
 	
+	public ClientGame(Client client)
+	{
+		this.client = client;
+	}
 	private void playGame()
 	{
 		//welcomeMessage();
 		
 		System.out.println("End of game");
+	}
+	
+	public void run()
+	{
+		try{
+			Process p;
+			p = Runtime.getRuntime().exec("python pythontest.py");
+			
+			InputStreamReader isr = new InputStreamReader(p.getInputStream());
+			BufferedReader br = new BufferedReader(isr);
+			PrintWriter out = new PrintWriter(p.getOutputStream(), true);
+			String temp = null;
+			
+			while((temp=br.readLine())!=null)
+			{	
+				if(temp.equals("0")){
+					client.sendMessage(CommunicationMessages.Client.BUTTON_PRESSED);
+					System.out.println("buttonpressed");
+				}
+			}
+			System.out.println("Python script terminated.");	
+
+			}catch(Exception e){
+				e.printStackTrace();
+			}		
 	}
 	 
 	/**
@@ -46,6 +81,11 @@ public class ClientGame
 		{
 			System.out.println(WELCOME_MESSAGE);
 			return CommunicationMessages.DONT_SEND_FEEDBACK;
+		}
+		else if(input.equals(CommunicationMessages.Server.GAME_START))
+		{
+			this.start();
+		    return CommunicationMessages.DONT_SEND_FEEDBACK;
 		}
 		else
 		{

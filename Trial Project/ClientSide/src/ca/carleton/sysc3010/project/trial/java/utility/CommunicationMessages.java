@@ -15,6 +15,7 @@ public class CommunicationMessages {
 	{
 	public static final String CLIENT_WAITING = "Okay";
 	public static final String I_DONT_KNOW = "I don't know what you're saying";
+	public static final String BUTTON_PRESSED = "The button was pressed!";
 	
 	// type of clients
 	public class Type 
@@ -35,6 +36,7 @@ public class CommunicationMessages {
 		public static final String FORCE_EXIT = "Force Exit";
 		public static final String DISPLAY = "Display on terminal";
 		public static final String REJECTED = "Connection Rejected";
+		public static final String GAME_START = "Game Started!";
 	}
 	
 	public class Spectator
