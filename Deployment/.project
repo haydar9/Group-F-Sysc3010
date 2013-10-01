@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Deployment</name>
+	<comment></comment>
+	<projects>
+		<project>ClientSide</project>
+		<project>Gertboard and PiFace Python Scripts</project>
+		<project>ServerSide</project>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+</projectDescription>

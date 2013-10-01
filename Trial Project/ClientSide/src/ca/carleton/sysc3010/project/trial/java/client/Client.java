@@ -146,6 +146,7 @@ public class Client {
 		}
 		
 		//client terminated
+		System.out.println("Client exited.");
 		client.connection.closeConnection();
 		
 	}
