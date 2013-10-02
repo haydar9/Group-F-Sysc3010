@@ -48,7 +48,7 @@ public class GameServerSide extends Thread{
 		
 			if(input.equals(CommunicationMessages.Client.BUTTON_PRESSED)){
 			System.out.println(cc.getClientName() + " pressed the button, he/she wins. TAn TAn TAn TAA!");
-			server.broadcastMessage(cc.getClientName() + " pressed the button, he/she wins. TAn TAn TAn TAA!");
+			server.broadcastDisplayMessage(cc.getClientName() + " pressed the button, he/she wins. TAn TAn TAn TAA!");
 			server.broadcastMessage(CommunicationMessages.Server.FORCE_EXIT);
 			
 		}
@@ -76,6 +76,7 @@ public class GameServerSide extends Thread{
 	public synchronized void startGame(ClientConnection cc)
 	{
 		server.addClient(cc);//TODO: when game done remove client.
+		server.sendMessageToClient("Ziad", cc.getClientName() + " has connected.");
 		if(playerList.size()<3){
 			System.out.println("Waiting for " + (3-playerList.size()) + " more players...");
 			cc.sendMessage(CommunicationMessages.Server.DISPLAY);

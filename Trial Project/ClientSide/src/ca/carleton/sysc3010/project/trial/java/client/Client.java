@@ -32,6 +32,9 @@ public class Client {
 		game = new ClientGame(this);
 	}
 	
+	
+	
+	
 	/** TODO: create a profound to constrain and control content of messages sent
 	 * 
 	 * @param message
@@ -53,8 +56,13 @@ public class Client {
 	
 	public boolean connectToServer()
 	{
+		return connectToServer(HOST,PORT);
+	}
+	
+	public boolean connectToServer(String host, int port)
+	{
 		//attempt to connect
-		if(connection.establishConnection(HOST, PORT))
+		if(connection.establishConnection(host, port))
 		{
 			
 			return true;
@@ -62,7 +70,6 @@ public class Client {
 		}
 		return false;
 	}
-	
 
 	
 	/**
@@ -87,9 +94,10 @@ public class Client {
 		//all it does is creating connection
 		
 		//must supply a name
-		if(args.length != 1)
+		if((args.length > 1) && args.length > 3)
 		{
 			System.out.println("Must specify player name.\n<Usage>: Client <player name>");
+			System.out.println("Must specify player name.\n<Usage>: Client <player name> <ip>");
 			System.exit(1);
 		}
 		
@@ -101,10 +109,15 @@ public class Client {
 		
 		
 		System.out.println("Connecting to server...");
-		
-		//this may take a bit longer than usual
-		boolean result = client.connectToServer();
-		
+		boolean result = false; 		
+		if(args.length == 2)
+		{
+			result = client.connectToServer(args[1],PORT);
+		}
+		else {
+			//this may take a bit longer than usual
+			result = client.connectToServer();
+		}
 		if(result)
 		{
 			System.out.println("Connecting to server...Successful.");

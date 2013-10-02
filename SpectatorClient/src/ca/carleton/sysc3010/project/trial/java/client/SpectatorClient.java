@@ -85,7 +85,7 @@ public class SpectatorClient {
 		}
 		else if(input.equals(CommunicationMessages.Server.WHAT_ARE_YOU))
 		{
-			return CommunicationMessages.Client.Type.SPECTATOR;
+			return new String(CommunicationMessages.Client.Type.SPECTATOR);
 		}
 		else if(input.equals(CommunicationMessages.Server.WELCOME_PLAYER))
 		{

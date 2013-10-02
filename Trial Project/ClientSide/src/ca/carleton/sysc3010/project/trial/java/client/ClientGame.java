@@ -36,7 +36,8 @@ public class ClientGame extends Thread
 	{
 		try{
 			Process p;
-			p = Runtime.getRuntime().exec("./buttons.o");
+			//p = Runtime.getRuntime().exec("./buttons.o");
+			p = Runtime.getRuntime().exec("sudo ./buttons");
 			
 			
 			InputStreamReader isr = new InputStreamReader(p.getInputStream());
@@ -47,19 +48,21 @@ public class ClientGame extends Thread
 			PrintWriter out = new PrintWriter(p.getOutputStream(), true);
 			String temp = null;
 			
+			out.println();
+			
 			while((temp=br.readLine())!=null)
 			{	
 				if(temp.equals("011")){
 					//Runtime.getRuntime().exec("python FlashLights.py");
 					client.sendMessage(CommunicationMessages.Client.BUTTON_PRESSED);
-					System.out.println("buttonpressed");
+					System.out.println("buttonpressed"); break;
 				}
 			}
 			while((temp=err.readLine())!=null)
 			{
 				System.out.println(temp);
 			}
-			System.out.println("Python script terminated.");	
+			//System.out.println("Python script terminated.");	
 
 			}catch(Exception e){
 				e.printStackTrace();

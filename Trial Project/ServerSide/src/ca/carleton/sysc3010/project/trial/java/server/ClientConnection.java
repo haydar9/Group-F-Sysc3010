@@ -51,14 +51,16 @@ public class ClientConnection extends Thread {
 			//initiate talking by asking client what they are (player or spectator)
 			out.println(new String(CommunicationMessages.Server.WHAT_ARE_YOU));
 			
-			if (in.readLine().equals(CommunicationMessages.Client.Type.PLAYER))
+			String repsonse = in.readLine();
+			
+			if ((CommunicationMessages.Client.Type.PLAYER).equals(repsonse))
 			{
 				clientType = CommunicationMessages.Client.Type.PLAYER;
 				out.println(new String(CommunicationMessages.Server.WHO_ARE_YOU));
 				clientName = in.readLine();
 				out.println(new String(CommunicationMessages.Server.WELCOME_PLAYER));
 			}
-			else if (in.readLine().equals(CommunicationMessages.Client.Type.SPECTATOR))
+			else if ((CommunicationMessages.Client.Type.SPECTATOR).equals(repsonse))
 			{
 				clientType = CommunicationMessages.Client.Type.SPECTATOR;
 				out.println(new String(CommunicationMessages.Server.WHO_ARE_YOU));
@@ -72,7 +74,7 @@ public class ClientConnection extends Thread {
 				return; //terminate thread by returning from the run method
 			}
 			
-			//client recognized
+			
 			System.out.println("Client: " + clientType + ", Name: " + clientName);
 			//get game object to redirect to
 			game.addPlayer(new Player(clientName));
