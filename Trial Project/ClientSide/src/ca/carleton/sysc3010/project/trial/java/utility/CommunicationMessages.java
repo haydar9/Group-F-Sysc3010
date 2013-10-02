@@ -13,7 +13,7 @@ public class CommunicationMessages {
 	
 	public class Client
 	{
-	public static final String CLIENT_WAITING = "Okay";
+	public static final String CLIENT_WAITING = "Client Waiting";
 	public static final String I_DONT_KNOW = "I don't know what you're saying";
 	public static final String BUTTON_PRESSED = "The button was pressed!";
 	

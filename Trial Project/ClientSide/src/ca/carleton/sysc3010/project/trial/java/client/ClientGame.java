@@ -27,7 +27,6 @@ public class ClientGame extends Thread
 	}
 	private void playGame()
 	{
-		//welcomeMessage();
 		
 		System.out.println("End of game");
 	}
