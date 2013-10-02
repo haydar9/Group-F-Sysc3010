@@ -62,6 +62,8 @@ public class ClientConnection extends Thread {
 			{
 				clientType = CommunicationMessages.Client.Type.SPECTATOR;
 				out.println(new String(CommunicationMessages.Server.WHO_ARE_YOU));
+				clientName = in.readLine();
+				out.println(new String(CommunicationMessages.Server.WELCOME_PLAYER));
 			}
 			else {
 				out.println(new String(CommunicationMessages.Server.REJECTED));

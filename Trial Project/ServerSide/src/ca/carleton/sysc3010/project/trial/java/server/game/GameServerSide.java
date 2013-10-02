@@ -75,6 +75,7 @@ public class GameServerSide extends Thread{
 	 */
 	public synchronized void startGame(ClientConnection cc)
 	{
+		server.addClient(cc);//TODO: when game done remove client.
 		if(playerList.size()<3){
 			System.out.println("Waiting for " + (3-playerList.size()) + " more players...");
 			cc.sendMessage(CommunicationMessages.Server.DISPLAY);

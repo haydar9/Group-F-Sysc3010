@@ -85,7 +85,7 @@ public class SpectatorClient {
 		}
 		else if(input.equals(CommunicationMessages.Server.WHAT_ARE_YOU))
 		{
-			return CommunicationMessages.Client.Type.PLAYER;
+			return CommunicationMessages.Client.Type.SPECTATOR;
 		}
 		else if(input.equals(CommunicationMessages.Server.WELCOME_PLAYER))
 		{
@@ -94,6 +94,7 @@ public class SpectatorClient {
 		}
 		else if(input.equals(CommunicationMessages.Server.GAME_START))
 		{
+			System.out.println("Game started, server is waiting for a player to press button.");
 			return CommunicationMessages.DONT_SEND_FEEDBACK;
 		}
 		else

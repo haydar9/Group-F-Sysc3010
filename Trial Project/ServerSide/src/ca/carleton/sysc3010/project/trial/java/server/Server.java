@@ -176,6 +176,10 @@ public class Server extends Thread {
 			{
 				server.broadcastDisplayMessage(terminal.nextLine());
 			}
+			else if(command.equals("force exit all"))
+			{
+				server.broadcastMessage(CommunicationMessages.Server.FORCE_EXIT);
+			}
 			else {
 				System.out.println("Error: Invalid command.");
 			}
