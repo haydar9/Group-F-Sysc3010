@@ -16,6 +16,7 @@ public class GameServerSide extends Thread{
 	
 	private List<Player> playerList;
 	private Server server;
+	private boolean gameWon;
 	
 	/**
 	 * Coupling, this coupling is safe since the game will not be created 
@@ -25,6 +26,7 @@ public class GameServerSide extends Thread{
 	public GameServerSide(Server server) {
 		this.server = server;
 		playerList = new ArrayList<Player>();
+		gameWon = false;
 	}
 
 	public void addPlayer(Player player)
@@ -40,8 +42,16 @@ public class GameServerSide extends Thread{
 	 */
 	public synchronized String processInput(String input, ClientConnection cc)
 	{
-		if(input.equals(CommunicationMessages.Client.BUTTON_PRESSED)){
-			System.out.println(cc.getClientName() + " pressed the button");
+		
+		if(!gameWon){
+			
+		
+			if(input.equals(CommunicationMessages.Client.BUTTON_PRESSED)){
+			System.out.println(cc.getClientName() + " pressed the button, he/she wins. TAn TAn TAn TAA!");
+			server.broadcastMessage(cc.getClientName() + " pressed the button, he/she wins. TAn TAn TAn TAA!");
+			server.broadcastMessage(CommunicationMessages.Server.FORCE_EXIT);
+			
+		}
 		}
 		return null;	
 	}

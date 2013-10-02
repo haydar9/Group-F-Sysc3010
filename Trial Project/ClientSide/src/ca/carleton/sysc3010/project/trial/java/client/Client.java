@@ -18,7 +18,7 @@ public class Client {
 	/* Handles Client connection to server	 */
 	private Connection connection;
 	
-	private final static String HOST = "0.0.0.0";
+	private final static String HOST = "10.0.0.62";
 	private final static int PORT = 4444;
 	
 	private ClientGame game;
