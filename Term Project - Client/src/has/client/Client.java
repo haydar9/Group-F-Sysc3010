@@ -52,7 +52,7 @@ public class Client{
 		while(ConnectionManager.isConnected())
 		{
 			//send request for update
-			
+			//ClientModel.instance.
 			try {
 				Thread.sleep(1000/updatePerSecond);
 			} catch (InterruptedException e) {

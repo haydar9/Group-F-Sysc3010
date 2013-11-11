@@ -1,12 +1,14 @@
 package has.client.model;
 
+import java.util.Observable;
+
 /**
  * GUI application or client specific model.
  * 
  * @author haydar
  *
  */
-public class ClientModel {
+public class ClientModel extends Observable{
 	
 	
 	public static ClientModel instance;
@@ -32,6 +34,7 @@ public class ClientModel {
 
 	public void setLed1Status(boolean led1Status) {
 		this.led1Status = led1Status;
+		notifyObservers();
 	}
 	
 	
