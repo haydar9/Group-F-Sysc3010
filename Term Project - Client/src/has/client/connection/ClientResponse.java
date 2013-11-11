@@ -1,5 +1,5 @@
 package has.client.connection;
 
-public class Response {
+public class ClientResponse {
 
 }

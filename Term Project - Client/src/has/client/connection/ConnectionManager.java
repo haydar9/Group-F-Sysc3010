@@ -49,7 +49,7 @@ public class ConnectionManager {
 	 * @param request
 	 * @return true if acknowledge
 	 */
-	public synchronized static Response send(Request request)
+	public synchronized static ClientResponse send(Request request)
 	{
 		return null;
 		//change request to xml

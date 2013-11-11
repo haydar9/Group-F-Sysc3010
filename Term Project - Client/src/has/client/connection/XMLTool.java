@@ -20,7 +20,7 @@ public class XMLTool {
 		return null;
 	}
 	
-	public static Response parseResponse(String xml)
+	public static ClientResponse parseResponse(String xml)
 	{
 		//TODO: implement
 		return null;
