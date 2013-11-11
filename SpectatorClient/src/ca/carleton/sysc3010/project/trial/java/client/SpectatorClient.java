@@ -1,5 +1,6 @@
 package ca.carleton.sysc3010.project.trial.java.client;
 
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -12,9 +13,12 @@ import ca.carleton.sysc3010.project.trial.java.utility.Connection;
  * @author haydar
  *
  */
-public class Client {
+public class SpectatorClient {
 	
-	
+	//welcome message
+	private static String WELCOME_MESSAGE = "Welcome to Jeopardy!";
+		
+		
 	/* Handles Client connection to server	 */
 	private Connection connection;
 	
@@ -23,17 +27,14 @@ public class Client {
 	
 	private ClientGame game;
 	
-	
+	private String spectatorName;
 
 	//Default Constructor
-	public Client()
+	public SpectatorClient(String spectatorName)
 	{
 		connection = new Connection();
-		game = new ClientGame(this);
+		this.spectatorName = spectatorName;
 	}
-	
-	
-	
 	
 	/** TODO: create a profound to constrain and control content of messages sent
 	 * 
@@ -56,13 +57,8 @@ public class Client {
 	
 	public boolean connectToServer()
 	{
-		return connectToServer(HOST,PORT);
-	}
-	
-	public boolean connectToServer(String host, int port)
-	{
 		//attempt to connect
-		if(connection.establishConnection(host, port))
+		if(connection.establishConnection(HOST, PORT))
 		{
 			
 			return true;
@@ -70,7 +66,44 @@ public class Client {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * @param input the input to process
+	 * @return output the command to send back to the server
+	 * after processing the server
+	 */
+	public String processCommand(String input)
+	{
+		if(input.equals(CommunicationMessages.Server.WAIT))
+		{
+			return CommunicationMessages.Client.CLIENT_WAITING;
+		}
+		else if(input.equals(CommunicationMessages.Server.WHO_ARE_YOU))
+		{
+			return spectatorName;
+			
+		}
+		else if(input.equals(CommunicationMessages.Server.WHAT_ARE_YOU))
+		{
+			return new String(CommunicationMessages.Client.Type.SPECTATOR);
+		}
+		else if(input.equals(CommunicationMessages.Server.WELCOME_PLAYER))
+		{
+			System.out.println(WELCOME_MESSAGE);
+			return CommunicationMessages.DONT_SEND_FEEDBACK;
+		}
+		else if(input.equals(CommunicationMessages.Server.GAME_START))
+		{
+			System.out.println("Game started, server is waiting for a player to press button.");
+			return CommunicationMessages.DONT_SEND_FEEDBACK;
+		}
+		else
+		{
+			return CommunicationMessages.Client.I_DONT_KNOW;
+		}
+		
+		
+	}
 	
 	/**
 	 * Client class is the main class, where it can take arguments in order
@@ -94,30 +127,24 @@ public class Client {
 		//all it does is creating connection
 		
 		//must supply a name
-		if((args.length > 1) && args.length > 3)
+		if(args.length != 1)
 		{
-			System.out.println("Must specify player name.\n<Usage>: Client <player name>");
-			System.out.println("Must specify player name.\n<Usage>: Client <player name> <ip>");
+			System.out.println("Must specify name.\n<Usage>: Client <spectator name>");
 			System.exit(1);
 		}
 		
 		
-		Client client = new Client();
+		SpectatorClient client = new SpectatorClient(args[0]);
 
-		client.game.setPlayerName(args[0]);
+		
 		
 		
 		
 		System.out.println("Connecting to server...");
-		boolean result = false; 		
-		if(args.length == 2)
-		{
-			result = client.connectToServer(args[1],PORT);
-		}
-		else {
-			//this may take a bit longer than usual
-			result = client.connectToServer();
-		}
+		
+		//this may take a bit longer than usual
+		boolean result = client.connectToServer();
+		
 		if(result)
 		{
 			System.out.println("Connecting to server...Successful.");
@@ -174,7 +201,7 @@ public class Client {
 				continue;
 			}
 			
-			output = client.game.processCommand(input);
+			output = client.processCommand(input);
 			
 			//some commands doesn't require to send feedback then skip rest of code in loop
 			if(output.equals(CommunicationMessages.DONT_SEND_FEEDBACK)) continue;//stops the loop here and iterate next
