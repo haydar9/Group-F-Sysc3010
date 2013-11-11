@@ -19,7 +19,8 @@ public class ConnectionManager {
 	
 	/** Timeout time in seconds */
 	private static int timeout = 1;
-	
+
+
 	
 	public static boolean establishConnection(String host, int port) 
 	{
@@ -36,20 +37,23 @@ public class ConnectionManager {
 		}
 	}
 
-	public boolean isConnected()
+	public static boolean isConnected()
 	{
 		return connection.isConnected();
 	}
 	
 	/**
 	 * Connection Manager on the client side only sends request then wait for response.
+	 * This method is synchronous, The user cannot send another request until the current
+	 * request is finished processing.
 	 * @param request
 	 * @return true if acknowledge
 	 */
-	public static Response send(Request request)
+	public synchronized static Response send(Request request)
 	{
+		return null;
 		//change request to xml
-		
+		//XMLTool
 		
 		//connection.sendMessage();
 		
@@ -59,12 +63,9 @@ public class ConnectionManager {
 		
 		//direct to appropiate manager/handler
 	}
-
-
-	
 	
 	//getters and setters
-
+	
 	public static String getHost() {
 		return connection.getHost();
 	}
