@@ -18,7 +18,7 @@ previousstatus = 0
 
 try:
 
-  print "Waiting for PIR to settle ..."
+  print "Waiting for setup ..."
 
   # Loop until PIR output is 0
   while GPIO.input(GPIO_PIR)==1:
