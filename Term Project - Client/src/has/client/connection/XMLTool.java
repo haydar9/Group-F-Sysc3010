@@ -1,5 +1,7 @@
 package has.client.connection;
 
+
+
 /**
  * The static xml tools methods
  * @author haydar
@@ -14,7 +16,7 @@ public class XMLTool {
 		
 	}
 	
-	public static String generateXml(ClientRequest request)
+	public static String generateXml(Request request)
 	{
 		//TODO: implement
 		return null;

@@ -1,8 +1,8 @@
 package has.client;
 
 import has.client.connection.ConnectionManager;
-import has.client.gui.GUI;
 import has.client.gui.view.View;
+import has.client.model.Model;
 
 /**
  * Main class to deploy client, initializing and deployment logic should be in the main method.
@@ -16,13 +16,13 @@ public class Client{
 	
 	
 	//TODO: add logger
-	private static String host;
-	private static int port;
+	
+	private static String host = DEFAULT_HOST;
+	private static int port = DEFAULT_PORT;
 	
 	private static int updatePerSecond = 1;
 	
-	private  
-	
+	private static View view;
 	
 	public static void main(String[] args)
 	{
@@ -35,15 +35,12 @@ public class Client{
 			//if successful
 			//launch GUI
 			//TODO: log creating GUI
-			Client.view = new View();
-			
+			Client.view = new View(Model.getInstance());
 		}
 		
 		else {
 			//if failed display a dialog and exit
 		}
-		
-		//set up handlers (event handlers) NOT GUI event handlers
 		
 		//set up connection related stuff such as xml parser and such
 		
