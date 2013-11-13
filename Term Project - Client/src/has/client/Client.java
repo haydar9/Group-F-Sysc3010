@@ -2,7 +2,7 @@ package has.client;
 
 import has.client.connection.ConnectionManager;
 import has.client.gui.view.View;
-import has.client.model.ClientModel;
+import has.client.model.Model;
 
 /**
  * Main class to deploy client, initializing and deployment logic should be in the main method.
@@ -35,7 +35,7 @@ public class Client{
 			//if successful
 			//launch GUI
 			//TODO: log creating GUI
-			Client.view = new View(ClientModel.instance);
+			Client.view = new View(Model.getInstance());
 		}
 		
 		else {

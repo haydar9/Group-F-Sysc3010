@@ -1,23 +1,27 @@
 package has.client.connection;
 
-import has.client.model.ClientModel;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
+import has.client.model.Model;
 
+@XmlRootElement
 public class Response {
 	
 	
-	private ClientModel currentModelFromServer;
+	private Model currentModelFromServer;
 
-	public Response(ClientModel currentModelFromServer)
+	public Response(Model currentModelFromServer)
 	{
 		this.currentModelFromServer = currentModelFromServer;
 	}
 	
-	public ClientModel getCurrentModelFromServer() {
+	public Model getCurrentModelFromServer() {
 		return currentModelFromServer;
 	}
 
-	public void setCurrentModelFromServer(ClientModel currentModelFromServer) {
+	@XmlElement
+	public void setCurrentModelFromServer(Model currentModelFromServer) {
 		this.currentModelFromServer = currentModelFromServer;
 	}
 	
