@@ -110,7 +110,9 @@ public class Connection {
 		{ 
 			out.println(message);
 		} catch(Exception e) {
-			System.out.println("Error sending.");
+			System.err.println("Error sending.");
+			e.printStackTrace();
+			isConnected = false;
 			return false;
 		}
 		
@@ -138,9 +140,12 @@ public class Connection {
 		
 		try 
 		{ 
+			//THIS BLOCKS CALLING THREAD
 			returned = in.readLine();
-		} catch(Exception e) {
+		} catch(IOException e) {
 			System.err.println("Error receving");
+			e.printStackTrace();
+			isConnected = false;
 			return null;
 		}
 		return returned;
@@ -155,6 +160,7 @@ public class Connection {
 	 * @return
 	 */
 	public boolean isConnected() {
+		//i think it's better if we send a request to check if we are connected.
 		return isConnected; 
 	}
 	
