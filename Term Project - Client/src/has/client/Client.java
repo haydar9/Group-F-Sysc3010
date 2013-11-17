@@ -1,8 +1,11 @@
 package has.client;
 
 import has.client.connection.ConnectionManager;
+import has.client.connection.response.ReceiverThread;
 import has.client.gui.view.View;
 import has.client.model.Model;
+
+import javax.swing.JOptionPane;
 
 /**
  * Main class to deploy client, initializing and deployment logic should be in the main method.
@@ -11,52 +14,70 @@ import has.client.model.Model;
  */
 public class Client{
 
-	private final static String DEFAULT_HOST = "";
-	private final static int DEFAULT_PORT = 4444;
-	
+	public final static String DEFAULT_HOST = "localhost";
+	public final static int DEFAULT_PORT = 4444;
 	
 	//TODO: add logger
-	
-	private static String host = DEFAULT_HOST;
-	private static int port = DEFAULT_PORT;
-	
-	private static int updatePerSecond = 1;
-	
-	private static View view;
-	
+	public static Model model;
+
 	public static void main(String[] args)
 	{
+		
 		//handle command line arguments: so far none
 		//perhaps host and port for better dynamic code
 		
+		String host = Client.DEFAULT_HOST;
+		int port = Client.DEFAULT_PORT;
+		View view;
+		
+		System.out.println("Attempting to connect to server...");
+		
 		//establish connection
-		if(ConnectionManager.establishConnection(host, port))
+		if(ConnectionManager.getInstance().establishConnection(host, port))
 		{
-			//if successful
-			//launch GUI
+			System.out.println("Successfully connected to server.");
+			//if successful -> launch GUI
 			//TODO: log creating GUI
-			Client.view = new View(Model.getInstance());
+			Client.model = new Model();
+			view = new View();
+			Client.model.addObserver(view);
+			
 		}
 		
 		else {
 			//if failed display a dialog and exit
+			System.err.println("Failed to connect to server.");
+			JOptionPane.showMessageDialog(null, "Failed to connect to server.", "Home Automation System",JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		
-		//set up connection related stuff such as xml parser and such
+		//dispatch responseHandler thread
+		ReceiverThread rT = new ReceiverThread(ConnectionManager.getInstance());
+		rT.start();
 		
-		//while loop for updating 
-		//this is part of the controller
-		while(ConnectionManager.isConnected())
+		
+		for(int i= 0; i < 10; i++)
 		{
-			//send request for update
-			
+			ConnectionManager.getInstance().sendMessage("PeriodicUpdate");
 			try {
-				Thread.sleep(1000/updatePerSecond);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-			
+		
+		try {
+			rT.join();
+			System.out.println("Receiver Thread joined");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("Client: main() exit");
+		
 	}
+	
+	
 }

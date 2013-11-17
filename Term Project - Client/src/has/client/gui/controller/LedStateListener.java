@@ -1,30 +1,28 @@
 package has.client.gui.controller;
 
-import has.client.model.Model;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 /**
  * The LED button handler:
- * 1- update model on the client
- * 2- send to server to update by using connection manager
+ * 1 - send request to server to update it's model by using connection manager
+ * 2 - update client model with updated model sent back from server
  * @author haydar
  * @author ziad
  */
 public class LedStateListener implements ActionListener {
 
+	private int ledId;
 	
-	public LedStateListener()
+	public LedStateListener(int ledId)
 	{
-		
+		this.ledId = ledId;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		//1- update model
-		Model.getInstance().setLed1Status(true); //true for on
-		//2- 
+
 	}
 
 }

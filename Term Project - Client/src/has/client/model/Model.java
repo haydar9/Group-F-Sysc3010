@@ -13,31 +13,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class Model extends Observable{
-	
-	
-	private static Model instance;
-	
-	//static initializer
-	static {
-		instance = new Model();
-	}
-	
-	//static getter and setter
-	/**
-	 * Use in static manner.
-	 * @return The current instance of the model.
-	 */
-	public static Model getInstance() {
-		return instance;
-	}
-
-	/**
-	 * Use in static manner.
-	 * @param instance
-	 */
-	public static void setInstance(Model instance) {
-		Model.instance = instance;
-	}
 
 	private boolean led1Status;
 	private boolean led2Status;
@@ -46,8 +21,8 @@ public class Model extends Observable{
 	private double temperatureValue;
 	private boolean motionSensorStatus;
 	
-
-	private Model()
+	
+	public Model()
 	{
 		
 	}
@@ -92,6 +67,8 @@ public class Model extends Observable{
 
 	public void setFanStatus(boolean fanStatus) {
 		this.fanStatus = fanStatus;
+		setChanged();
+		notifyObservers();
 	}
 
 
@@ -102,6 +79,8 @@ public class Model extends Observable{
 
 	public void setTemperatureValue(double temperatureValue) {
 		this.temperatureValue = temperatureValue;
+		setChanged();
+		notifyObservers();
 	}
 
 
@@ -112,7 +91,11 @@ public class Model extends Observable{
 	@XmlElement
 	public void setMotionSensorStatus(boolean motionSensorStatus) {
 		this.motionSensorStatus = motionSensorStatus;
+		setChanged();
+		notifyObservers();
 	}
-	
+
+
+
 	
 }
