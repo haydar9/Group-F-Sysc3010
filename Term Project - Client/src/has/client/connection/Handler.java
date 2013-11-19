@@ -22,13 +22,8 @@ public class Handler {
 	}
 
 	
-	//Ignore this for now
-	public static String generateXml(Request request)
-	{
-		Map<String, Object> attributesMap = request.getAttributesMap();
-		//TODO: straightforward for every key that would be node and the value would be value of node or something like that 
-		return null;
-	}
+	//handle response
+	
 	
 	public static void handleResponse(String xml)
 	{
