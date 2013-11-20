@@ -22,7 +22,14 @@ public class Server {
 		Socket clientSocket;
 		PrintWriter out;
 		BufferedReader in;
-		HomeAutomationSystem has = new HomeAutomationSystem();
+		HomeAutomationSystem has;
+		try {
+			has = new HomeAutomationSystem();
+		} catch (Exception e1) {
+			System.err.println("Failed to init Home Automation System");
+			e1.printStackTrace();
+			return; //exit
+		}
 		
 		try {
 			server = new ServerSocket(port);
@@ -40,6 +47,9 @@ public class Server {
 			
 			String request;
 			int i = 0;
+			//TODO: remove after: this is just testing
+			boolean toggle = true;
+			
 			while((request = in.readLine())!= null)
 			{
 				System.out.println(new Time(System.currentTimeMillis()) + ":\tFrom Client:\t" + request);
@@ -51,6 +61,10 @@ public class Server {
 				{
 					 
 					System.out.println(new Time(System.currentTimeMillis()) + ":\tTo Client:\t" + "ACK");
+					
+					has.deviceInterface.turnLed(1, toggle);
+					toggle = !toggle;
+					
 					out.println("ACK");
 				}
 				 else if (request.equals("PeriodicUpdate"))

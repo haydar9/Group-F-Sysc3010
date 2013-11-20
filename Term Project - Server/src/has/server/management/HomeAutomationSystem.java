@@ -1,7 +1,12 @@
 package has.server.management;
 
+import has.server.controller.DeviceInterface;
+import has.server.controller.DeviceManager;
+
+import java.io.FileNotFoundException;
 import java.io.StringWriter;
 
+import javax.script.ScriptException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -12,10 +17,18 @@ import org.w3c.dom.Node;
 
 public class HomeAutomationSystem {
 	
+	//FIXME: change to private after
+	public DeviceInterface deviceInterface;
 	
-	public HomeAutomationSystem()
+	public HomeAutomationSystem() throws Exception
 	{
-		
+		try {
+			deviceInterface = new DeviceManager();
+		} catch (FileNotFoundException | ScriptException e) {
+			e.printStackTrace();
+			throw new Exception("Fail to initialize device manager");
+			
+		}
 	}
 	
 	/**
