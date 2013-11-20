@@ -1,6 +1,7 @@
 package has.client;
 
 import has.client.connection.ConnectionManager;
+
 import has.client.connection.response.ReceiverThread;
 import has.client.gui.view.View;
 import has.client.model.Model;
