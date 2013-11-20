@@ -37,6 +37,7 @@ public class View extends JFrame implements Observer {
 		//FIXME: this shutdowns JVM immediately along with running threads, 
 		//need to control behavior for clean shutdown 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
 		
 		//content panel
 		contentPanel = new JPanel();
