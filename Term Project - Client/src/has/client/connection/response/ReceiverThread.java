@@ -2,7 +2,7 @@ package has.client.connection.response;
 
 import has.client.Client;
 import has.client.connection.ConnectionManager;
-import has.client.connection.Handler;
+import has.client.connection.XmlHandler;
 
 
 public class ReceiverThread extends Thread {
@@ -19,7 +19,7 @@ public class ReceiverThread extends Thread {
 		String input;
 		while((input = connectionManager.receieveMessage()) != null)
 		{
-			Handler.handleResponse(input);
+			XmlHandler.handleResponse(input);
 			
 			
 		}
