@@ -1,0 +1,16 @@
+Plan for today
+
+1- Integrate devices with the server using jython.
+	- issue: jython can't load python modules (gertboard and piface) 			that depends on c
+2- integrate interface for Motor and sensor with server (step 1)
+
+3 – Start presentation for code review
+
+4- Work on request/response xml messages
+
+What we did?
+
+Implemented Interface for motor and sensor in interface
+Developed a simple prototype (without xml or device integration) to demonstrate server/client model
+Experiment with integration of python (jython).
+Design the flow of the system (sequence diagram)
