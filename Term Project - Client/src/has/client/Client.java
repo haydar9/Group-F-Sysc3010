@@ -1,11 +1,10 @@
 package has.client;
 
 import has.client.connection.ConnectionManager;
-
-import has.client.connection.response.ReceiverThread;
-import has.client.gui.view.View;
+import has.client.gui.view.TestView;
 import has.client.model.Model;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -29,7 +28,7 @@ public class Client{
 		
 		String host = Client.DEFAULT_HOST;
 		int port = Client.DEFAULT_PORT;
-		View view;
+		TestView view;
 		
 		System.out.println("Attempting to connect to server...");
 		
@@ -40,7 +39,7 @@ public class Client{
 			//if successful -> launch GUI
 			//TODO: log creating GUI
 			Client.model = new Model();
-			view = new View();
+			view = new TestView();
 			Client.model.addObserver(view);
 			
 		}
@@ -55,18 +54,7 @@ public class Client{
 		//dispatch responseHandler thread
 		ReceiverThread rT = new ReceiverThread(ConnectionManager.getInstance());
 		rT.start();
-		
-		
-		for(int i= 0; i < 10; i++)
-		{
-			ConnectionManager.getInstance().sendMessage("PeriodicUpdate");
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+
 		
 		try {
 			rT.join();

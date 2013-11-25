@@ -1,6 +1,5 @@
-package has.client.connection.response;
+package has.client;
 
-import has.client.Client;
 import has.client.connection.ConnectionManager;
 import has.client.connection.XmlHandler;
 
@@ -19,7 +18,7 @@ public class ReceiverThread extends Thread {
 		String input;
 		while((input = connectionManager.receieveMessage()) != null)
 		{
-			XmlHandler.handleResponse(input);
+			XmlHandler.handleXml(input);
 			
 			
 		}

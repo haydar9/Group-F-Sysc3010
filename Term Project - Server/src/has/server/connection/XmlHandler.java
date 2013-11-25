@@ -1,10 +1,8 @@
-package has.client.connection;
+package has.server.connection;
 
-import has.client.Client;
-
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.Time;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,7 +18,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 
@@ -49,7 +46,7 @@ public class XmlHandler {
 	
 	//handle response
 	
-	public static String generateLEDControlRequest(boolean status, String id)
+	public static String generateLEDUpdate(boolean status, String id)
 	{
 		if(docBuilder == null) return null;
 		// root elements
@@ -58,13 +55,9 @@ public class XmlHandler {
 		doc.appendChild(rootElement);
 				
 		// staff elements
-		Element requestNode = doc.createElement("request");
+		Element requestNode = doc.createElement(XmlDefinition.UPDATE);
 		rootElement.appendChild(requestNode);
 				 
-		// setting attribute to has element
-		Attr attribute = doc.createAttribute("type");
-		attribute.setValue("control");
-		requestNode.setAttributeNode(attribute);
 		
 		Element ledNode = doc.createElement("led");
 		// setting attribute to <led> element
@@ -83,7 +76,6 @@ public class XmlHandler {
 		led_status.appendChild(doc.createTextNode("ON"));
 		ledNode.appendChild(led_status);
 		
-		
 		try{
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transformer = tf.newTransformer();
@@ -100,11 +92,12 @@ public class XmlHandler {
 		return null;
 	}
 	
+	
 	public static void handleXml(String xml)
 	{
 		//TODO: Cassandra part, parse response here and update model
 		try {
-			Document doc = docBuilder.parse(new InputSource(new ByteArrayInputStream(xml.getBytes())));
+			Document doc = docBuilder.parse(xml);
 			
 			//TODO: double check, note: recommended - ingore for now until double checked
 			doc.getDocumentElement().normalize();
@@ -113,27 +106,38 @@ public class XmlHandler {
 			
 			//check if model data is sent from server
 			//get response tag
-			NodeList nodeList = doc.getElementsByTagName(XmlDefinition.UPDATE);
+			NodeList nodeList = doc.getElementsByTagName(XmlDefinition.REQUEST);
 			
 			for(int i = 0; i < nodeList.getLength(); i++)
 			{
 				Node node = nodeList.item(i);
-				if(XmlDefinition.LED.equals(node.getChildNodes().item(0).getNodeName()))
+				if(XmlDefinition.LED.equals(node.getNodeName()))
 				{
 					if (node.getNodeType() == Node.ELEMENT_NODE) {
 						 
 						Element e = (Element) node;;
-						String id = ((Element) e.getElementsByTagName(XmlDefinition.LED).item(0)).getAttribute("id");
+						String id = e.getAttribute("id");
 						String status = e.getElementsByTagName(XmlDefinition.STATUS).item(0).getTextContent();
 						if(id != null && status != null)
 						{
 							boolean tempstatus;
 							if(status.equals("ON")) tempstatus = true;
-							else tempstatus = false;
+							else tempstatus = true;
 							
-							if(id.equals("1")) { System.out.println("Model update...");Client.model.setLed1Status(tempstatus);}
-							else if (id.equals("2")) { System.out.println("Model update...");Client.model.setLed2Status(tempstatus);}
-							else if (id.equals("3")) { System.out.println("Model update...");Client.model.setLed3Status(tempstatus);}
+							if(id.equals("1")) { 
+								String testResponse = XmlHandler.generateLEDUpdate(true, "1");
+								System.out.println(new Time(System.currentTimeMillis()) + ":\tTo Client:\t" + testResponse);
+							}
+							else if (id.equals("2")) 
+{
+								String testResponse = XmlHandler.generateLEDUpdate(true, "1");
+								System.out.println(new Time(System.currentTimeMillis()) + ":\tTo Client:\t" + testResponse);
+}
+								else if (id.equals("3")) 
+								{
+									String testResponse = XmlHandler.generateLEDUpdate(true, "1");
+									System.out.println(new Time(System.currentTimeMillis()) + ":\tTo Client:\t" + testResponse);
+								}
 						}
 					}
 				}
@@ -152,7 +156,7 @@ public class XmlHandler {
 
 public static void main(String argv[]) {
 	
-	System.out.println(generateLEDControlRequest(true, "1"));
+	System.out.println(generateLEDUpdate(true, "1"));
 	
 }
 

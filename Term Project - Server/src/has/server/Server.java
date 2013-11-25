@@ -1,5 +1,6 @@
 package has.server;
 
+import has.server.connection.XmlHandler;
 import has.server.management.HomeAutomationSystem;
 
 import java.io.BufferedReader;
@@ -9,6 +10,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Time;
+import java.util.Random;
 
 public class Server {
 
@@ -40,14 +42,24 @@ public class Server {
 			
 			String request;
 			int i = 0;
+			Random r = new Random();
 			while((request = in.readLine())!= null)
 			{
 				System.out.println(new Time(System.currentTimeMillis()) + ":\tFrom Client:\t" + request);
 				//TODO:uncomment once implemented
 				//out.println(has.handleRequest(request));
 				
+				/*try {
+					Thread.sleep(r.nextInt(5000));
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+				String testResponse = XmlHandler.generateLEDUpdate(true, "1");
+				System.out.println(new Time(System.currentTimeMillis()) + ":\tTo Client:\t" + testResponse);
+				out.println(testResponse);
 				//testing code: replace once above code is implemented
-				 if (request.equals("ButtonClicked"))
+			/*	 if (request.equals("ButtonClicked"))
 				{
 					 
 					System.out.println(new Time(System.currentTimeMillis()) + ":\tTo Client:\t" + "ACK");
@@ -59,7 +71,7 @@ public class Server {
 						System.out.println(new Time(System.currentTimeMillis()) + ":\tTo Client:\t" + sendBack);
 						out.println(sendBack);
 				 }
-			}
+*/			}
 
 		} catch (IOException e) {
 			e.printStackTrace();

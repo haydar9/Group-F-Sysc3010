@@ -1,17 +1,12 @@
-package has.client.model;
+package has.model;
+
+import has.server.connection.XmlHandler;
 
 import java.util.Observable;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- * GUI application or client specific model.
- * 
- * @author haydar
- *
- */
-@XmlRootElement
+
 public class Model extends Observable{
 
 	private boolean led1Status;
@@ -20,24 +15,25 @@ public class Model extends Observable{
 	private boolean fanStatus;
 	private double temperatureValue;
 	private boolean motionSensorStatus;
-	
-	
+
+
 	public Model()
 	{
-		
+
 	}
-	
-	
+
+
 	//getters and setters
-	
+
 	public boolean isLed1Status() {
 		return led1Status;
 	}
 
 	public void setLed1Status(boolean led1Status) {
 		this.led1Status = led1Status;
-		setChanged();
 		notifyObservers();
+		//FIXME hard code test
+		String output = XmlHandler.generateLEDUpdate(true, "1");
 	}
 
 
@@ -48,8 +44,6 @@ public class Model extends Observable{
 
 	public void setLed2Status(boolean led2Status) {
 		this.led2Status = led2Status;
-		setChanged();
-		notifyObservers();
 	}
 
 
@@ -60,9 +54,6 @@ public class Model extends Observable{
 
 	public void setLed3Status(boolean led3Status) {
 		this.led3Status = led3Status;
-		setChanged();
-		notifyObservers();
-
 	}
 
 
@@ -103,5 +94,6 @@ public class Model extends Observable{
 
 
 
-	
+
+
 }
