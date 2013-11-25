@@ -29,6 +29,7 @@ public class ClientModelTest {
 	@Test
 	public void testSetLed1Status() {
 		fail("Not yet implemented"); // TODO
+	
 	}
 
 	@Test
@@ -55,5 +56,8 @@ public class ClientModelTest {
 	public void testSetMotionSensorStatus() {
 		fail("Not yet implemented"); // TODO
 	}
+	
+	
+	
 
 }
