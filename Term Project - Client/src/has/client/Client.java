@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class Client{
 
-	public final static String DEFAULT_HOST = "localhost";
+	public final static String DEFAULT_HOST = "10.0.0.63";
 	public final static int DEFAULT_PORT = 4444;
 	
 	//TODO: add logger

@@ -1,5 +1,6 @@
 package has.server;
 
+import has.model.Model;
 import has.server.connection.XmlHandler;
 import has.server.management.HomeAutomationSystem;
 
@@ -14,7 +15,19 @@ import java.util.Random;
 
 public class Server {
 
+	public static Model model;
+	
+	public static PrintWriter out;
+	
 	public final static int DEFAUL_PORT = 4444;
+	
+	public static void send(String xml)
+	{
+		if(out != null){
+			System.out.println(new Time(System.currentTimeMillis()) + ":\tTo Client:\t" + xml);
+			out.println(xml);
+		}
+	}
 	
 	public static void main(String args[])
 	{
@@ -22,9 +35,10 @@ public class Server {
 		int port = Server.DEFAUL_PORT;
 		ServerSocket server;
 		Socket clientSocket;
-		PrintWriter out;
+		
 		BufferedReader in;
 		HomeAutomationSystem has = new HomeAutomationSystem();
+		model = new Model();
 		
 		try {
 			server = new ServerSocket(port);
@@ -47,7 +61,7 @@ public class Server {
 			{
 				System.out.println(new Time(System.currentTimeMillis()) + ":\tFrom Client:\t" + request);
 				//TODO:uncomment once implemented
-				//out.println(has.handleRequest(request));
+				XmlHandler.handleXml(request);
 				
 				/*try {
 					Thread.sleep(r.nextInt(5000));
@@ -55,9 +69,7 @@ public class Server {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}*/
-				String testResponse = XmlHandler.generateLEDUpdate(true, "1");
-				System.out.println(new Time(System.currentTimeMillis()) + ":\tTo Client:\t" + testResponse);
-				out.println(testResponse);
+				
 				//testing code: replace once above code is implemented
 			/*	 if (request.equals("ButtonClicked"))
 				{
@@ -80,4 +92,6 @@ public class Server {
 		
 		System.out.println("Server exited.");
 	}
+	
+	
 }

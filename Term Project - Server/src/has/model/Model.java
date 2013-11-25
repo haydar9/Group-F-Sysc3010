@@ -1,5 +1,6 @@
 package has.model;
 
+import has.server.Server;
 import has.server.connection.XmlHandler;
 
 import java.util.Observable;
@@ -33,7 +34,10 @@ public class Model extends Observable{
 		this.led1Status = led1Status;
 		notifyObservers();
 		//FIXME hard code test
-		String output = XmlHandler.generateLEDUpdate(true, "1");
+		System.out.println("Model update");
+		String output = XmlHandler.generateLEDUpdate(led1Status, "1");
+		if(output != null)
+			Server.send(output);
 	}
 
 

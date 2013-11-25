@@ -209,4 +209,8 @@ public class View extends JFrame implements Observer {
 			connectionValue.setText("OFF");
 		//temperatureTextfield.value = model.getTemperatureValue();
 	}
+	public static void main(String[] args)
+	{
+		new View();
+	}
 }
