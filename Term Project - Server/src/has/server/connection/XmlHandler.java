@@ -1,6 +1,8 @@
 package has.server.connection;
 
 import has.server.Server;
+import has.server.controller.DeviceManager;
+import has.server.management.HomeAutomationSystem;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -33,7 +35,6 @@ import org.xml.sax.SAXException;
 public class XmlHandler {
 
 	//fields
-	private static boolean toggle;
 	private static DocumentBuilder docBuilder;
 
 	static {
@@ -58,8 +59,8 @@ public class XmlHandler {
 		doc.appendChild(rootElement);
 
 		// staff elements
-		Element requestNode = doc.createElement(XmlDefinition.UPDATE);
-		rootElement.appendChild(requestNode);
+		Element updateNode = doc.createElement(XmlDefinition.UPDATE);
+		rootElement.appendChild(updateNode);
 
 
 		Element ledNode = doc.createElement("led");
@@ -68,7 +69,7 @@ public class XmlHandler {
 		ledIdAttribute.setValue(id);
 		ledNode.setAttributeNode(ledIdAttribute);
 
-		requestNode.appendChild(ledNode);
+		updateNode.appendChild(ledNode);
 
 		// led_status elements
 		Element led_status = doc.createElement("status");
@@ -95,10 +96,55 @@ public class XmlHandler {
 		return null;
 	}
 
-
-	public static void handleXml(String xml)
+	public static String generateMotionSensorUpdate(boolean motionDetected)
 	{
-		//TODO: Cassandra part, parse response here and update model
+		if(docBuilder == null) return null;
+		// root elements
+		Document doc = docBuilder.newDocument();
+		Element rootElement = doc.createElement("HomeAutomationSystem");
+		doc.appendChild(rootElement);
+
+		// staff elements
+		Element updateNode = doc.createElement(XmlDefinition.UPDATE);
+		rootElement.appendChild(updateNode);
+
+
+		Element motionSensorNode = doc.createElement("motion_sensor");
+
+		updateNode.appendChild(motionSensorNode);
+
+		// led_status elements
+		Element motion_status = doc.createElement("status");
+		if(!motionDetected){
+			motion_status.appendChild(doc.createTextNode("OFF"));
+		}
+		else
+			motion_status.appendChild(doc.createTextNode("ON"));
+		
+		motionSensorNode.appendChild(motion_status);
+
+		//transform into xml
+		try{
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			StringWriter writer = new StringWriter();
+			transformer.transform(new DOMSource(doc), new StreamResult(writer));
+			String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
+			return output;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	/*
+	 * Migrated to HomeAutomationSystem class
+	 */
+/*	public static void handleRquest(String xml)
+	{
 		try {
 			Document doc = docBuilder.parse(new InputSource(new ByteArrayInputStream(xml.getBytes())));
 
@@ -127,9 +173,9 @@ public class XmlHandler {
 							if(status.equals("ON")) tempstatus = true;
 							else tempstatus = false;
 
-							if(id.equals("1")) Server.model.setLed1Status(tempstatus);
-							else if (id.equals("2")) Server.model.setLed2Status(tempstatus);
-							else if (id.equals("3")) Server.model.setLed3Status(tempstatus);
+							if(id.equals("1")) HomeAutomationSystem.turnLed(1, tempstatus);
+							else if (id.equals("2")) HomeAutomationSystem.turnLed(2, tempstatus);
+							else if (id.equals("3")) HomeAutomationSystem.turnLed(3, tempstatus);
 						}
 					}
 				}
@@ -142,7 +188,7 @@ public class XmlHandler {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 
 	public static void main(String argv[]) {

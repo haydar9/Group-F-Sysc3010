@@ -37,7 +37,7 @@ public class Model extends Observable{
 		System.out.println("Model update");
 		String output = XmlHandler.generateLEDUpdate(led1Status, "1");
 		if(output != null)
-			Server.send(output);
+			Server.broadcast(output);
 	}
 
 
@@ -48,6 +48,11 @@ public class Model extends Observable{
 
 	public void setLed2Status(boolean led2Status) {
 		this.led2Status = led2Status;
+		
+		System.out.println("Model update");
+		String output = XmlHandler.generateLEDUpdate(led2Status, "2");
+		if(output != null)
+			Server.broadcast(output);
 	}
 
 
@@ -58,6 +63,11 @@ public class Model extends Observable{
 
 	public void setLed3Status(boolean led3Status) {
 		this.led3Status = led3Status;
+		
+		System.out.println("Model update");
+		String output = XmlHandler.generateLEDUpdate(led3Status, "3");
+		if(output != null)
+			Server.broadcast(output);
 	}
 
 
@@ -68,8 +78,6 @@ public class Model extends Observable{
 
 	public void setFanStatus(boolean fanStatus) {
 		this.fanStatus = fanStatus;
-		setChanged();
-		notifyObservers();
 	}
 
 
@@ -80,8 +88,6 @@ public class Model extends Observable{
 
 	public void setTemperatureValue(double temperatureValue) {
 		this.temperatureValue = temperatureValue;
-		setChanged();
-		notifyObservers();
 	}
 
 
@@ -92,8 +98,10 @@ public class Model extends Observable{
 	@XmlElement
 	public void setMotionSensorStatus(boolean motionSensorStatus) {
 		this.motionSensorStatus = motionSensorStatus;
-		setChanged();
-		notifyObservers();
+		System.out.println("Model update");
+		String output = XmlHandler.generateLEDUpdate(true, "1");
+		if(output != null)
+			Server.broadcast(output);
 	}
 
 

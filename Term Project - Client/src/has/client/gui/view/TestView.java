@@ -32,6 +32,7 @@ public class TestView extends JFrame implements Observer {
 	private JLabel connectionValue;
 	private JButton button;
 	
+	private JLabel motionSensorValue; 
 	//for testing
 	private boolean toggle;
 	
@@ -58,7 +59,8 @@ public class TestView extends JFrame implements Observer {
 		contentPanel.add(connectionLabel);
 		contentPanel.add(connectionValue);
 		contentPanel.add(button);
-		
+		contentPanel.add(new JLabel("Motion Sensor: "));
+		contentPanel.add(motionSensorValue = new JLabel("Initial"));
 		
 		//.addActionListener(new LedStateListener)
 		//TODO: make the action listener in a separate class
@@ -98,6 +100,13 @@ public class TestView extends JFrame implements Observer {
 			connectionValue.setText("ON");
 		else 
 			connectionValue.setText("OFF");
+		
+		if(model.isMotionSensorStatus()){
+			motionSensorValue.setText("ON");
+		}
+		else {
+			motionSensorValue.setText("OFF");
+		}
 		//temperatureTextfield.value = model.getTemperatureValue();
 	}
 }
