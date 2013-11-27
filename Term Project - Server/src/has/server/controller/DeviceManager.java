@@ -52,8 +52,11 @@ public class DeviceManager implements DeviceInterface{
                 //System.out.println("MOTION DETECTED!!!"); //this is where we send an interrupt saying there is motion right haydar?
 				 //gpio.setState(true, myOutput);
 				 //Thread.sleep(2);
-            	Server.model.setMotionSensorStatus(true);
-				 
+            	if(event.getState().isHigh()){
+            	Server.model.setMotionSensorStatus(false);
+            	}
+            	else
+            		Server.model.setMotionSensorStatus(true);
             }
         }, myInput);
         
@@ -68,13 +71,13 @@ public class DeviceManager implements DeviceInterface{
 		
 		
 		//put code here and return false if failed
-		
+		gpio.setState(on, myOutputs.get(ledId));
+
 		
 		//update model
 		switch(ledId)
 		{
 		case 1:
-			gpio.setState(on, myOutputs.get(3));
 			Server.model.setLed1Status(on);
 			break;
 		case 2:
