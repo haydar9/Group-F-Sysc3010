@@ -25,11 +25,20 @@ public class DeviceManager implements DeviceInterface{
         PiFaceGpioProvider gpioProvider;
 		
 		gpioProvider = new PiFaceGpioProvider(PiFaceGpioProvider.DEFAULT_ADDRESS,Spi.CHANNEL_0);
-		
+		final GpioPinDigitalOutput myOutputs[] = { 
+	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_00),
+	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_01),
+	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_02),
+	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_03),
+	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_04),
+	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_05),
+	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_06),
+	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_07),
+	          };
         
 
         GpioPinDigitalInput myInput = gpio.provisionDigitalInputPin(gpioProvider, PiFacePin.INPUT_04);
-        final GpioPinDigitalOutput myOutput = gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_00);      
+        //final GpioPinDigitalOutput myOutput = gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_00);      
         
         // create and register gpio pin listener
         gpio.addListener(new GpioPinListenerDigital() {
@@ -52,7 +61,7 @@ public class DeviceManager implements DeviceInterface{
 	 */
 	@Override
 	public boolean turnLed(int ledId, boolean on) {
-		//TODO: pierre add led control here please
+		gpio.setState(true, myOutputs[ledId]);
 		
 		//put code here and return false if failed
 		
