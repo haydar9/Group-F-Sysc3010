@@ -44,7 +44,7 @@ public class HomeAutomationSystem extends Thread{
 
 	public HomeAutomationSystem() throws IOException
 	{
-		//this.deviceInterface = new DeviceManager();
+		this.deviceInterface = new DeviceManager();
 		tasks = new LinkedBlockingDeque<String>();
 		running = true;
 
