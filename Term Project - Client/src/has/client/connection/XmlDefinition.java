@@ -7,5 +7,7 @@ public class XmlDefinition {
 	public final static String LED = "led" ;
 	public final static String STATUS = "status" ;
 	public final static String  UPDATE = "update";
+	public final static String  MOTION_SENSOR = "motion_sensor";
+	
 
 }

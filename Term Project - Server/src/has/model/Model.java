@@ -99,7 +99,7 @@ public class Model extends Observable{
 	public void setMotionSensorStatus(boolean motionSensorStatus) {
 		this.motionSensorStatus = motionSensorStatus;
 		System.out.println("Model update");
-		String output = XmlHandler.generateLEDUpdate(true, "1");
+		String output = XmlHandler.generateMotionSensorUpdate(motionSensorStatus);
 		if(output != null)
 			Server.broadcast(output);
 	}

@@ -137,6 +137,24 @@ public class XmlHandler {
 						}
 					}
 				}
+				
+				else if(XmlDefinition.MOTION_SENSOR.equals(node.getChildNodes().item(0).getNodeName()))
+				{
+					if (node.getNodeType() == Node.ELEMENT_NODE) {
+						 
+						Element e = (Element) node;;
+						String status = e.getElementsByTagName(XmlDefinition.STATUS).item(0).getTextContent();
+						if(status != null)
+						{
+							boolean tempstatus;
+							if(status.equals("ON")) tempstatus = true;
+							else tempstatus = false;
+							
+							System.out.println("Model update...");Client.model.setMotionSensorStatus(tempstatus);
+							
+						}
+					}
+				}
 			}
 			
 		} catch (SAXException e) {
