@@ -3,6 +3,8 @@ package has.server.controller;
 import has.server.Server;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.pi4j.gpio.extension.piface.PiFaceGpioProvider;
 import com.pi4j.gpio.extension.piface.PiFacePin;
@@ -17,24 +19,26 @@ import com.pi4j.wiringpi.Spi;
 
 public class DeviceManager implements DeviceInterface{
 
+	private final GpioController gpio;
+	private final List<GpioPinDigitalOutput> myOutputs = new ArrayList<GpioPinDigitalOutput>();
+	
 	//device manager constructor
 	public DeviceManager() throws IOException {
-		final GpioController gpio = GpioFactory.getInstance();
+		gpio = GpioFactory.getInstance();
         
 
         PiFaceGpioProvider gpioProvider;
 		
 		gpioProvider = new PiFaceGpioProvider(PiFaceGpioProvider.DEFAULT_ADDRESS,Spi.CHANNEL_0);
-		final GpioPinDigitalOutput myOutputs[] = { 
-	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_00),
-	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_01),
-	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_02),
-	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_03),
-	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_04),
-	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_05),
-	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_06),
-	            gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_07),
-	          };
+		
+		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_00));
+		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_01));
+		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_02));
+		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_03));
+		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_04));
+		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_05));
+		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_06));
+		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_07));
         
 
         GpioPinDigitalInput myInput = gpio.provisionDigitalInputPin(gpioProvider, PiFacePin.INPUT_04);
@@ -61,7 +65,7 @@ public class DeviceManager implements DeviceInterface{
 	 */
 	@Override
 	public boolean turnLed(int ledId, boolean on) {
-		gpio.setState(on, myOutputs[ledId]);
+		
 		
 		//put code here and return false if failed
 		
@@ -70,6 +74,7 @@ public class DeviceManager implements DeviceInterface{
 		switch(ledId)
 		{
 		case 1:
+			gpio.setState(on, myOutputs.get(3));
 			Server.model.setLed1Status(on);
 			break;
 		case 2:

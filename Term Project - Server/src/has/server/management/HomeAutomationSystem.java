@@ -65,15 +65,21 @@ public class HomeAutomationSystem extends Thread{
 		}
 	}
 
-public void addRequest(String request)
-{
-	try {
-		tasks.put(request);
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	/**
+	 * Add request onto the queue to be handled by the handler thread. 
+	 * The reason for synchronization is because this method will be
+	 * invoked from multiple threads (connection threads).
+	 * @param request
+	 */
+	public synchronized void addRequest(String request)
+	{
+		try {
+			tasks.put(request);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-}
 
 
 	public boolean isRunning() {

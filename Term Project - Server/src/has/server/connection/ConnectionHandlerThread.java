@@ -50,12 +50,21 @@ public class ConnectionHandlerThread extends Thread{
 
 	public String receive() throws IOException
 	{
-		return in.readLine();
+		synchronized (in) {
+			return in.readLine();
+		}
 	}
 	
 	public void send(String xmlToSend)
 	{
-		out.println(xmlToSend);
+		synchronized(out) { //not good approach but it's good for now
+			try {
+				out.println(xmlToSend);
+			} catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
