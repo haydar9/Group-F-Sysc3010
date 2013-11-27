@@ -61,7 +61,7 @@ public class DeviceManager implements DeviceInterface{
 	 */
 	@Override
 	public boolean turnLed(int ledId, boolean on) {
-		gpio.setState(true, myOutputs[ledId]);
+		gpio.setState(on, myOutputs[ledId]);
 		
 		//put code here and return false if failed
 		
