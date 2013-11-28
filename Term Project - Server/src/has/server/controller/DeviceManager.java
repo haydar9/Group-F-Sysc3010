@@ -40,7 +40,8 @@ public class DeviceManager implements DeviceInterface{
 		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_06));
 		myOutputs.add(gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_07));
         
-
+		byte packet[] = {0x41, 0x13, 0x00}; //initalize
+		int result = Spi.wiringPiSPIDataRW(0, packet, 3); //inialize
         GpioPinDigitalInput myInput = gpio.provisionDigitalInputPin(gpioProvider, PiFacePin.INPUT_04);
         //final GpioPinDigitalOutput myOutput = gpio.provisionDigitalOutputPin(gpioProvider, PiFacePin.OUTPUT_00);      
         
