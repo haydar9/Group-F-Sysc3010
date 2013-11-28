@@ -52,11 +52,12 @@ public class DeviceManager implements DeviceInterface{
                 //System.out.println("MOTION DETECTED!!!"); //this is where we send an interrupt saying there is motion right haydar?
 				 //gpio.setState(true, myOutput);
 				 //Thread.sleep(2);
+            	System.out.println("motion");
             	if(event.getState().isHigh()){
             	Server.model.setMotionSensorStatus(false);
             	}
             	else
-            		Server.model.setMotionSensorStatus(true);
+            		Server.model.setMotionSensorStatus(true); 
             }
         }, myInput);
         
@@ -97,6 +98,11 @@ public class DeviceManager implements DeviceInterface{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public void turnMotor(boolean on){
+		gpio.setState(on, myOutputs.get(4));
+	}
+	
 
 	
 }
