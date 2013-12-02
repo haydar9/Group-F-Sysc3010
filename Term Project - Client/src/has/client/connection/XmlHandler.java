@@ -49,6 +49,7 @@ public class XmlHandler {
 	
 	//handle response
 	
+	// request led status
 	public static String generateLEDControlRequest(boolean status, String id)
 	{
 		if(docBuilder == null) return null;
@@ -99,6 +100,59 @@ public class XmlHandler {
 		
 		return null;
 	}
+	
+	// request fan status
+	public static String generatefanControlRequest(boolean status, String id)
+	{
+		if(docBuilder == null) return null;
+		// root elements
+		Document doc = docBuilder.newDocument();
+		Element rootElement = doc.createElement("HomeAutomationSystem");
+		doc.appendChild(rootElement);
+				
+		// staff elements
+		Element requestNode = doc.createElement("request");
+		rootElement.appendChild(requestNode);
+				 
+		// setting attribute to has element
+		Attr attribute = doc.createAttribute("type");
+		attribute.setValue("control");
+		requestNode.setAttributeNode(attribute);
+		
+		Element fanNode = doc.createElement("fan");
+		// setting attribute to <fan> element
+		Attr fanIdAttribute = doc.createAttribute("id");
+		fanIdAttribute.setValue(id);
+		fanNode.setAttributeNode(fanIdAttribute);
+
+		requestNode.appendChild(fanNode);
+		
+		// fan_status elements
+		Element fan_status = doc.createElement("status");
+		if(!status){
+		fan_status.appendChild(doc.createTextNode("OFF"));
+		}
+		else
+		fan_status.appendChild(doc.createTextNode("ON"));
+		fanNode.appendChild(fan_status);
+		
+		
+		try{
+		TransformerFactory tf = TransformerFactory.newInstance();
+		Transformer transformer = tf.newTransformer();
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		StringWriter writer = new StringWriter();
+		transformer.transform(new DOMSource(doc), new StreamResult(writer));
+		String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
+		return output;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	
 	public static void handleXml(String xml)
 	{
