@@ -1,16 +1,10 @@
 package has.client;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
-
 import has.client.connection.ConnectionManager;
 import has.client.gui.view.TestView;
 import has.client.model.Model;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 
 /**
  * Main class to deploy client, initializing and deployment logic should be in the main method.

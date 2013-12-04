@@ -94,7 +94,8 @@ public class Model extends Observable{
 
 	public void setMotionSensorStatus(boolean motionSensorStatus) {
 		this.motionSensorStatus = motionSensorStatus;
-		motionSensorHistory+= (new Date()).toString() + "\tMotion Detected!\n"; 
+		if(motionSensorStatus) //if motion detected 
+			motionSensorHistory+= (new Date()).toString() + "\tMotion Detected!\n"; 
 		setChanged();
 		notifyObservers();
 	}

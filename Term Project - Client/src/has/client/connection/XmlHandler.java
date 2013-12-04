@@ -161,8 +161,8 @@ public class XmlHandler {
 			//TODO: validate through schema right away dont implement validation
 
 			//check if model data is sent from server			
-			Element responseNode = ((Element)doc.getChildNodes().item(0));
-			String responseType = responseNode.getAttribute("type");
+			Element responseNode = ((Element)doc.getChildNodes().item(0).getChildNodes().item(0));
+			String responseType = responseNode.getNodeName();
 			if(("model").equals(responseType))
 			{
 				NodeList nodeList = responseNode.getChildNodes();
