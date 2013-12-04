@@ -45,6 +45,9 @@ public class DeviceManager extends Thread implements DeviceInterface{
 	public DeviceManager() throws IOException {
 
 
+		temperatureSensorLock = new Object();
+		
+		
 		//setup gertboard
 		Gertboard.gertboardSPISetup();
 

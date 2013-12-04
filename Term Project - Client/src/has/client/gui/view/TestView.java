@@ -147,7 +147,7 @@ public class TestView extends JFrame implements Observer {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String xmlRequest = XmlHandler.generateLEDControlRequest(!Client.model.isLed2Status(), "1"); //turn on LED
+				String xmlRequest = XmlHandler.generateLEDControlRequest(!Client.model.isLed2Status(), "2"); //turn on LED
 				
 				if(xmlRequest != null)
 					ConnectionManager.getInstance().sendMessage(xmlRequest);
@@ -158,7 +158,7 @@ public class TestView extends JFrame implements Observer {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String xmlRequest = XmlHandler.generateLEDControlRequest(!Client.model.isLed3Status(), "1"); //turn on LED
+				String xmlRequest = XmlHandler.generateLEDControlRequest(!Client.model.isLed3Status(), "3"); //turn on LED
 				
 				if(xmlRequest != null)
 					ConnectionManager.getInstance().sendMessage(xmlRequest);
@@ -198,7 +198,6 @@ public class TestView extends JFrame implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		System.out.println("View update");
 		// TODO Auto-generated method stub
 		Model model = (Model)arg0;
 		if(model.isLed1Status())
@@ -231,6 +230,7 @@ public class TestView extends JFrame implements Observer {
 		
 		temperatureSensorReading.setText(String.valueOf(model.getTemperatureValue()));
 		motionSensorHistory.append(model.getMotionSensorHistory());
+		motionSensorHistory.setCaretPosition(motionSensorHistory.getDocument().getLength());
 	}
 	
 	public static void main(String[] args)

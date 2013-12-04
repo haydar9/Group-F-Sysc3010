@@ -102,7 +102,7 @@ public class Model extends Observable{
 
 	public String getMotionSensorHistory() {
 		String copy = motionSensorHistory;
-		motionSensorHistory = null;
+		motionSensorHistory = "";
 		return copy;
 	}
 

@@ -59,6 +59,7 @@ public class Server {
 		}
 		
 		try {
+			model = new Model(); //initializes the model and assign it to a static variable to ease access
 			has = new HomeAutomationSystem();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -70,7 +71,6 @@ public class Server {
 		//create new server
 		ServerSocket server;
 				
-		model = new Model(); //initializes the model and assign it to a static variable to ease access
 		
 		//run the home automation system thread
 		has.start();
