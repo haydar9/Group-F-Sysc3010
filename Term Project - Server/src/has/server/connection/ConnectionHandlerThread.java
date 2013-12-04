@@ -28,9 +28,13 @@ public class ConnectionHandlerThread extends Thread{
 
 	@Override
 	public void run() {
+		
+		
 		String request;
 
 		try {
+			send(XmlHandler.generateModelUpdate());
+			
 			while((request = receive())!= null)
 			{
 				System.out.println(new Time(System.currentTimeMillis()) + ": " + socket.getInetAddress() + "\tFrom Client:\t" + request);

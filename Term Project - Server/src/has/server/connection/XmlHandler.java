@@ -1,5 +1,6 @@
 package has.server.connection;
 
+import has.comm.XmlDefinition;
 import has.server.Server;
 import has.server.controller.DeviceManager;
 import has.server.management.HomeAutomationSystem;
@@ -63,7 +64,7 @@ public class XmlHandler {
 		rootElement.appendChild(updateNode);
 
 
-		Element ledNode = doc.createElement("led");
+		Element ledNode = doc.createElement(XmlDefinition.LED);
 		// setting attribute to <led> element
 		Attr ledIdAttribute = doc.createAttribute("id");
 		ledIdAttribute.setValue(id);
@@ -109,18 +110,18 @@ public class XmlHandler {
 		rootElement.appendChild(updateNode);
 
 
-		Element motionSensorNode = doc.createElement("motion_sensor");
+		Element motionSensorNode = doc.createElement(XmlDefinition.MOTION_SENSOR);
 
 		updateNode.appendChild(motionSensorNode);
 
 		// led_status elements
 		Element motion_status = doc.createElement("status");
 		if(!motionDetected){
-			motion_status.appendChild(doc.createTextNode("OFF"));
+			motion_status.appendChild(doc.createTextNode(XmlDefinition.MOTION_STILL));
 		}
 		else
-			motion_status.appendChild(doc.createTextNode("ON"));
-		
+			motion_status.appendChild(doc.createTextNode(XmlDefinition.MOTION_DETECTED));
+
 		motionSensorNode.appendChild(motion_status);
 
 		//transform into xml
@@ -143,7 +144,7 @@ public class XmlHandler {
 	/*
 	 * Migrated to HomeAutomationSystem class
 	 */
-/*	public static void handleRquest(String xml)
+	/*	public static void handleRquest(String xml)
 	{
 		try {
 			Document doc = docBuilder.parse(new InputSource(new ByteArrayInputStream(xml.getBytes())));
@@ -191,10 +192,213 @@ public class XmlHandler {
 	}*/
 
 
+
+
+	public static String generateTemperatureUpdate(double temperatureValue) {
+		if(docBuilder == null) return null;
+		// root elements
+		Document doc = docBuilder.newDocument();
+		Element rootElement = doc.createElement("HomeAutomationSystem");
+		doc.appendChild(rootElement);
+
+		// staff elements
+		Element updateNode = doc.createElement(XmlDefinition.UPDATE);
+		rootElement.appendChild(updateNode);
+
+
+		Element temepratureSensorNode = doc.createElement(XmlDefinition.TEMPERATURE_SENSOR);
+
+		updateNode.appendChild(temepratureSensorNode);
+
+		// led_status elements
+		Element tempValue = doc.createElement(XmlDefinition.VALUE);
+
+		tempValue.appendChild(doc.createTextNode(String.valueOf(temperatureValue)));
+
+		temepratureSensorNode.appendChild(tempValue);
+
+		//transform into xml
+		try{
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			StringWriter writer = new StringWriter();
+			transformer.transform(new DOMSource(doc), new StreamResult(writer));
+			String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
+			return output;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static String generateFanUpdate(boolean fanStatus) {
+		if(docBuilder == null) return null;
+		// root elements
+		Document doc = docBuilder.newDocument();
+		Element rootElement = doc.createElement("HomeAutomationSystem");
+		doc.appendChild(rootElement);
+
+		// staff elements
+		Element updateNode = doc.createElement(XmlDefinition.UPDATE);
+		rootElement.appendChild(updateNode);
+
+
+		Element fanNode = doc.createElement(XmlDefinition.FAN);
+
+		updateNode.appendChild(fanNode);
+
+		// led_status elements
+		Element fan_status = doc.createElement(XmlDefinition.STATUS);
+
+		if(fanStatus)
+			fan_status.appendChild(doc.createTextNode("ON"));
+		else
+			fan_status.appendChild(doc.createTextNode("OFF"));
+
+
+
+		fanNode.appendChild(fan_status);
+
+		//transform into xml
+		try{
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			StringWriter writer = new StringWriter();
+			transformer.transform(new DOMSource(doc), new StreamResult(writer));
+			String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
+			return output;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static String generateModelUpdate() {
+		if(docBuilder == null) return null;
+		// root elements
+		Document doc = docBuilder.newDocument();
+		Element rootElement = doc.createElement("HomeAutomationSystem");
+		doc.appendChild(rootElement);
+
+		// staff elements
+		Element modelNode = doc.createElement(XmlDefinition.MODEL);
+		rootElement.appendChild(modelNode);
+
+
+		Element fanNode = doc.createElement(XmlDefinition.FAN);
+
+		modelNode.appendChild(fanNode);
+
+		// led_status elements
+		Element fan_status = doc.createElement(XmlDefinition.STATUS);
+
+		if(Server.model.isFanStatus())
+			fan_status.appendChild(doc.createTextNode("ON"));
+		else
+			fan_status.appendChild(doc.createTextNode("OFF"));
+
+
+
+		fanNode.appendChild(fan_status);
+
+
+
+		Element temepratureSensorNode = doc.createElement(XmlDefinition.TEMPERATURE_SENSOR);
+
+		modelNode.appendChild(temepratureSensorNode);
+
+		// temp value
+		Element tempValue = doc.createElement(XmlDefinition.VALUE);
+
+		tempValue.appendChild(doc.createTextNode(String.valueOf(Server.model.getTemperatureValue())));
+
+		temepratureSensorNode.appendChild(tempValue);
+
+
+
+		Element motionSensorNode = doc.createElement(XmlDefinition.MOTION_SENSOR);
+
+		modelNode.appendChild(motionSensorNode);
+
+		// led_status elements
+		Element motion_status = doc.createElement("status");
+		if(!Server.model.isMotionSensorStatus()){
+			motion_status.appendChild(doc.createTextNode(XmlDefinition.MOTION_STILL));
+		}
+		else
+			motion_status.appendChild(doc.createTextNode(XmlDefinition.MOTION_DETECTED));
+
+		motionSensorNode.appendChild(motion_status);
+
+
+		for(int i =1; i <=3 ; i++)
+		{
+			Element ledNode = doc.createElement(XmlDefinition.LED);
+			// setting attribute to <led> element
+			Attr ledIdAttribute = doc.createAttribute("id");
+			ledIdAttribute.setValue(String.valueOf(i));
+			ledNode.setAttributeNode(ledIdAttribute);
+
+			modelNode.appendChild(ledNode);
+
+			// led_status elements
+			Element led_status = doc.createElement("status");
+			boolean status = false;
+
+			switch(i){
+			case 1:
+				status = Server.model.isLed1Status();
+				break;
+			case 2:
+				status = Server.model.isLed2Status();
+				break;
+			case 3:
+				status = Server.model.isLed3Status();
+				break;
+
+			}
+			if(!status){
+				led_status.appendChild(doc.createTextNode("OFF"));
+			}
+			else
+				led_status.appendChild(doc.createTextNode("ON"));
+			
+			ledNode.appendChild(led_status);
+		}
+
+
+		//transform into xml
+		try{
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			StringWriter writer = new StringWriter();
+			transformer.transform(new DOMSource(doc), new StreamResult(writer));
+			String output = writer.getBuffer().toString();//.replaceAll("\n|\r", "");
+			return output;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	//for testing
 	public static void main(String argv[]) {
 
 		System.out.println(generateLEDUpdate(true, "1"));
+		System.out.println(generateMotionSensorUpdate(true));
+		System.out.println(generateFanUpdate(true));
+		System.out.println(generateTemperatureUpdate(22.0));
+		System.out.println(generateModelUpdate());
+
 
 	}
-
 }

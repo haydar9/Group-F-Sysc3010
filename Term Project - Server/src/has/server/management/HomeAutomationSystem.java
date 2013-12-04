@@ -1,6 +1,6 @@
 package has.server.management;
 
-import has.server.connection.XmlDefinition;
+import has.comm.XmlDefinition;
 import has.server.controller.DeviceInterface;
 import has.server.controller.DeviceManager;
 
@@ -48,7 +48,7 @@ public class HomeAutomationSystem extends Thread{
 		tasks = new LinkedBlockingDeque<String>();
 		running = true;
 
-		instance = this; //enable global access to this object
+		instance = this; //enable global access to this object (singleton)
 	}
 
 
@@ -96,15 +96,18 @@ public class HomeAutomationSystem extends Thread{
 		try {
 			Document doc = docBuilder.parse(new InputSource(new ByteArrayInputStream(xml.getBytes())));
 
-			//TODO: double check, note: recommended - ingore for now until double checked
+			//recommended to do
 			doc.getDocumentElement().normalize();
 
 			//TODO: validate through schema right away dont implement validation
 
 			//check if model data is sent from server
-			//get response tag
+			
+			
+			//get request tag
 			NodeList nodeList = doc.getElementsByTagName(XmlDefinition.REQUEST);
 
+			
 			for(int i = 0; i < nodeList.getLength(); i++)
 			{
 				Node node = nodeList.item(i);
@@ -124,6 +127,23 @@ public class HomeAutomationSystem extends Thread{
 							if(id.equals("1")) deviceInterface.turnLed(1, tempstatus);
 							else if (id.equals("2")) deviceInterface.turnLed(2, tempstatus);
 							else if (id.equals("3")) deviceInterface.turnLed(3, tempstatus);
+						}
+					}
+				}
+				
+				else if(XmlDefinition.FAN.equals(node.getChildNodes().item(0).getNodeName()))
+				{
+					if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+						Element e = (Element) node;;
+						String status = e.getElementsByTagName(XmlDefinition.STATUS).item(0).getTextContent();
+						if(status != null)
+						{
+							boolean tempstatus;
+							if(status.equals("ON")) tempstatus = true;
+							else tempstatus = false;
+
+							deviceInterface.turnMotor(tempstatus);
 						}
 					}
 				}

@@ -1,11 +1,16 @@
 package has.client;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import has.client.connection.ConnectionManager;
 import has.client.gui.view.TestView;
 import has.client.model.Model;
 
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 /**
  * Main class to deploy client, initializing and deployment logic should be in the main method.
@@ -41,14 +46,11 @@ public class Client{
 
 		}
 
-		//perhaps host and port for better dynamic code
-
-
 
 		TestView view;
 
 		System.out.println("Attempting to connect to server...");
-
+		
 		//establish connection
 		if(ConnectionManager.getInstance().establishConnection(host, port))
 		{

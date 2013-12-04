@@ -1,9 +1,7 @@
 package has.client.model;
 
+import java.util.Date;
 import java.util.Observable;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * GUI application or client specific model.
@@ -11,7 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author haydar
  *
  */
-@XmlRootElement
 public class Model extends Observable{
 
 	private boolean led1Status;
@@ -20,11 +17,12 @@ public class Model extends Observable{
 	private boolean fanStatus;
 	private double temperatureValue;
 	private boolean motionSensorStatus;
+	private String motionSensorHistory;
 	
 	
 	public Model()
 	{
-		
+		motionSensorHistory="";
 	}
 	
 	
@@ -94,13 +92,19 @@ public class Model extends Observable{
 		return motionSensorStatus;
 	}
 
-	@XmlElement
 	public void setMotionSensorStatus(boolean motionSensorStatus) {
 		this.motionSensorStatus = motionSensorStatus;
+		motionSensorHistory+= (new Date()).toString() + "\tMotion Detected!\n"; 
 		setChanged();
 		notifyObservers();
 	}
 
+
+	public String getMotionSensorHistory() {
+		String copy = motionSensorHistory;
+		motionSensorHistory = null;
+		return copy;
+	}
 
 
 	

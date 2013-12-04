@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="lib/pi4j-device.jar"/>
 	<classpathentry kind="lib" path="lib/pi4j-gpio-extension.jar"/>
 	<classpathentry kind="lib" path="lib/pi4j-service.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Term Project - Communication"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class Model extends Observable{
 
+	//model attributes
 	private boolean led1Status;
 	private boolean led2Status;
 	private boolean led3Status;
@@ -17,10 +18,13 @@ public class Model extends Observable{
 	private double temperatureValue;
 	private boolean motionSensorStatus;
 
+	//needed fields for internal operating
+	private double previousTemperature;
+
 
 	public Model()
 	{
-
+		previousTemperature = 0;
 	}
 
 
@@ -32,9 +36,6 @@ public class Model extends Observable{
 
 	public void setLed1Status(boolean led1Status) {
 		this.led1Status = led1Status;
-		notifyObservers();
-		//FIXME hard code test
-		System.out.println("Model update");
 		String output = XmlHandler.generateLEDUpdate(led1Status, "1");
 		if(output != null)
 			Server.broadcast(output);
@@ -48,8 +49,6 @@ public class Model extends Observable{
 
 	public void setLed2Status(boolean led2Status) {
 		this.led2Status = led2Status;
-		
-		System.out.println("Model update");
 		String output = XmlHandler.generateLEDUpdate(led2Status, "2");
 		if(output != null)
 			Server.broadcast(output);
@@ -63,8 +62,6 @@ public class Model extends Observable{
 
 	public void setLed3Status(boolean led3Status) {
 		this.led3Status = led3Status;
-		
-		System.out.println("Model update");
 		String output = XmlHandler.generateLEDUpdate(led3Status, "3");
 		if(output != null)
 			Server.broadcast(output);
@@ -78,6 +75,9 @@ public class Model extends Observable{
 
 	public void setFanStatus(boolean fanStatus) {
 		this.fanStatus = fanStatus;
+		String output = XmlHandler.generateFanUpdate(fanStatus);
+		if(output != null)
+			Server.broadcast(output);
 	}
 
 
@@ -88,6 +88,12 @@ public class Model extends Observable{
 
 	public void setTemperatureValue(double temperatureValue) {
 		this.temperatureValue = temperatureValue;
+		if(temperatureValue != previousTemperature){
+			String output = XmlHandler.generateTemperatureUpdate(temperatureValue);
+			if(output != null)
+				Server.broadcast(output);
+		}
+		previousTemperature = temperatureValue;
 	}
 
 
@@ -98,7 +104,6 @@ public class Model extends Observable{
 	@XmlElement
 	public void setMotionSensorStatus(boolean motionSensorStatus) {
 		this.motionSensorStatus = motionSensorStatus;
-		System.out.println("Model update");
 		String output = XmlHandler.generateMotionSensorUpdate(motionSensorStatus);
 		if(output != null)
 			Server.broadcast(output);
