@@ -40,6 +40,8 @@ public class DeviceManager extends Thread implements DeviceInterface{
 
 	//sync objects
 	private Object temperatureSensorLock;
+	
+	private final static double TEMPERATURE_THRESHOLD = 40;
 
 	//device manager constructor
 	public DeviceManager() throws IOException {
@@ -126,13 +128,21 @@ public class DeviceManager extends Thread implements DeviceInterface{
 	@Override
 	public void run() {
 		int count = 0;
+		double currentTemp;
 		while(true)
 		{
 			count++;
 			
+			currentTemp = readTemperature();
 			//update model with current temperature
-			Server.model.setTemperatureValue(readTemperature());
+			Server.model.setTemperatureValue(currentTemp);
 			
+			if(currentTemp > TEMPERATURE_THRESHOLD) {
+				turnMotor(true);
+			}
+			else {
+				turnMotor(false);//turn off motor otherwise
+			}
 			
 			//check if motion is detected
 			if(!Server.model.isMotionSensorStatus() && count == 3)
