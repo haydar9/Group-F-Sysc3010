@@ -15,3 +15,16 @@ Term Project:
 
 A Home Automation System... where a raspberry pi is connected to sensors and leds, 
 acting as a household lights and motion/temperature sensor. 
+
+
+
+Term Project
+==========
+README file
+
+1- Setup hardware connection according to the mapping diagram 
+2- Run the server.jar with super user on the RPi e.g. "sudo server.jar"
+Options: The user can specify port to host the sever on e.g. "sudo server.jar 1234"
+3- Run the client.jar on another device. Must have a display otherwise the gui will not work.
+Client Does not require super user. e.g. "client.jar" 
+Options: Can specify IP and port to connect to as command line argument, e.g. "client.jar 10.0.0.3 4444"
