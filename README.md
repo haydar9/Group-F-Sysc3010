@@ -18,9 +18,8 @@ acting as a household lights and motion/temperature sensor.
 
 
 
-Term Project
+Term Project README file
 ==========
-README file
 
 1- Setup hardware connection according to the mapping diagram 
 2- Run the server.jar with super user on the RPi e.g. "sudo server.jar"
