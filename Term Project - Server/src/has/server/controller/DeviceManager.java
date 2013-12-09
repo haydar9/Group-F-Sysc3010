@@ -68,10 +68,14 @@ public class DeviceManager extends Thread implements DeviceInterface{
 			@Override
 			public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 				// display pin state on console
-				if(event.getState().isLow())
+				if(event.getState().isLow()){
+					//turnLed(1, true);
 					Server.model.setMotionSensorStatus(true); //update model
-				else 
+				}
+				else {
+					//turnLed(1, false);
 					Server.model.setMotionSensorStatus(false);
+				}
 
 				//perhaps call a custom listener hre
 				//RegisteredListener registeredListener = registeredListener;
@@ -121,11 +125,22 @@ public class DeviceManager extends Thread implements DeviceInterface{
 	//task to read temperature every second
 	@Override
 	public void run() {
+		int count = 0;
 		while(true)
 		{
+			count++;
 			
 			//update model with current temperature
 			Server.model.setTemperatureValue(readTemperature());
+			
+			
+			//check if motion is detected
+			if(!Server.model.isMotionSensorStatus() && count == 3)
+			{
+				turnLed(1, false); //turn off light
+				turnLed(2, false);
+				turnLed(3, false);
+			}
 			
 			//sleep for one second
 			try {
