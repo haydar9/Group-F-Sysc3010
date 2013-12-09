@@ -18,7 +18,7 @@ acting as a household lights and motion/temperature sensor.
 
 
 
-Term Project README file
+Term Project: README file
 ==========
 
 1- Setup hardware connection according to the mapping diagram 
